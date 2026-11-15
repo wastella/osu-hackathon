@@ -1,0 +1,375 @@
+Person ID,Gender,Age,Occupation,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Blood Pressure,Heart Rate,Daily Steps,Sleep Disorder,systolic,diastolic,pulse_pressure,mean_arterial_pressure,bp_stage,rate_pressure_product,steps_per_active_minute,sleep_debt_hours,sleeper_type,quality_residual,sleep_duration_z_occ,quality_of_sleep_z_occ,stress_level_z_occ,bmi_clean,bmi_ordinal,has_sleep_disorder,profile_id,profile_count,archetype
+1,Male,27,Software Engineer,6.1,6,42,6,Overweight,126/83,77,4200,None,126,83,43,97.33,Stage 1,9702,100.0,0.9,Short,0.058,,,,Overweight,1,0,1,1,Stressed Short Sleepers
+2,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None,125,80,45,95.0,Stage 1,9375,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,2,2,Stressed Short Sleepers
+3,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None,125,80,45,95.0,Stage 1,9375,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,2,2,Stressed Short Sleepers
+4,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea,140,90,50,106.67,Stage 2,11900,100.0,1.1,Short,-1.676,,,,Obese,2,1,3,2,Stressed Short Sleepers
+5,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea,140,90,50,106.67,Stage 2,11900,100.0,1.1,Short,-1.676,,,,Obese,2,1,3,2,Stressed Short Sleepers
+6,Male,28,Software Engineer,5.9,4,30,8,Obese,140/90,85,3000,Insomnia,140,90,50,106.67,Stage 2,11900,100.0,1.1,Short,-1.676,,,,Obese,2,1,4,1,Stressed Short Sleepers
+7,Male,29,Teacher,6.3,6,40,7,Obese,140/90,82,3500,Insomnia,140,90,50,106.67,Stage 2,11480,87.5,0.7,Short,-0.207,-1.724,-1.478,2.331,Obese,2,1,5,1,Stressed Short Sleepers
+8,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,6,4,Balanced Healthy
+9,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,6,4,Balanced Healthy
+10,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,6,4,Balanced Healthy
+11,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,266.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,7,2,Stressed Short Sleepers
+12,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,6,4,Balanced Healthy
+13,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,266.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,7,2,Stressed Short Sleepers
+14,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,266.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,8,3,Stressed Short Sleepers
+15,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,266.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,8,3,Stressed Short Sleepers
+16,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,266.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,8,3,Stressed Short Sleepers
+17,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Sleep Apnea,132,87,45,102.0,Stage 1,10560,100.0,0.5,Short,-1.473,-0.569,-1.529,0.607,Normal,0,1,9,1,Stressed Short Sleepers
+18,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,Sleep Apnea,120,80,40,93.33,Stage 1,8400,266.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,1,10,1,Stressed Short Sleepers
+19,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Insomnia,132,87,45,102.0,Stage 1,10560,100.0,0.5,Short,-1.473,-0.569,-1.529,0.607,Normal,0,1,11,1,Stressed Short Sleepers
+20,Male,30,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-0.935,0.729,0.465,-0.534,Normal,0,0,12,1,Balanced Healthy
+21,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,13,4,Balanced Healthy
+22,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,13,4,Balanced Healthy
+23,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,13,4,Balanced Healthy
+24,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,13,4,Balanced Healthy
+25,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,14,2,Balanced Healthy
+26,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.333,1.076,0.465,-0.534,Normal,0,0,15,4,Balanced Healthy
+27,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,14,2,Balanced Healthy
+28,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.333,1.076,0.465,-0.534,Normal,0,0,15,4,Balanced Healthy
+29,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.333,1.076,0.465,-0.534,Normal,0,0,15,4,Balanced Healthy
+30,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.333,1.076,0.465,-0.534,Normal,0,0,15,4,Balanced Healthy
+31,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Sleep Apnea,130,86,44,100.67,Stage 1,10140,117.14,0.6,Short,-1.34,-0.67,-1.529,0.607,Normal,0,1,16,1,Stressed Short Sleepers
+32,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Insomnia,130,86,44,100.67,Stage 1,10140,117.14,0.6,Short,-1.34,-0.67,-1.529,0.607,Normal,0,1,17,1,Stressed Short Sleepers
+33,Female,31,Nurse,7.9,8,75,4,Normal Weight,117/76,69,6800,None,117,76,41,89.67,Normal,8073,90.67,0.0,Adequate,-0.333,0.845,0.407,-0.647,Normal,0,0,18,1,Balanced Healthy
+34,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,19,3,Stressed Short Sleepers
+35,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+36,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,19,3,Stressed Short Sleepers
+37,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,19,3,Stressed Short Sleepers
+38,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-0.935,0.729,0.465,-0.534,Normal,0,0,21,3,Balanced Healthy
+39,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-0.935,0.729,0.465,-0.534,Normal,0,0,21,3,Balanced Healthy
+40,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-0.935,0.729,0.465,-0.534,Normal,0,0,21,3,Balanced Healthy
+41,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+42,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+43,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+44,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,22,3,Balanced Healthy
+45,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+46,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,22,3,Balanced Healthy
+47,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+48,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.2,0.961,0.465,-0.534,Normal,0,0,22,3,Balanced Healthy
+49,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,20,7,Balanced Healthy
+50,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,Sleep Apnea,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,1,23,1,Balanced Healthy
+51,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,177.78,0.0,Adequate,0.198,-0.954,-0.547,-0.781,Normal,0,0,24,2,Balanced Healthy
+52,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,177.78,0.0,Adequate,0.198,-0.954,-0.547,-0.781,Normal,0,0,24,2,Balanced Healthy
+53,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+54,Male,32,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-0.935,0.729,0.465,-0.534,Normal,0,0,26,1,Balanced Healthy
+55,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+56,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+57,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,27,2,Balanced Healthy
+58,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+59,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+60,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,106.67,0.0,Adequate,-1.067,0.845,0.465,-0.534,Normal,0,0,27,2,Balanced Healthy
+61,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+62,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,25,7,Stressed Short Sleepers
+63,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,28,4,Stressed Short Sleepers
+64,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,28,4,Stressed Short Sleepers
+65,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,28,4,Stressed Short Sleepers
+66,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.8,Short,-0.074,-0.892,-0.855,0.923,Normal,0,0,28,4,Stressed Short Sleepers
+67,Male,32,Accountant,7.2,8,50,6,Normal Weight,118/76,68,7000,None,118,76,42,90.0,Normal,8024,140.0,0.0,Adequate,0.597,0.276,0.236,1.138,Normal,0,0,29,1,Balanced Healthy
+68,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,Insomnia,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,1,30,1,Stressed Short Sleepers
+69,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None,128,85,43,99.33,Stage 1,9728,110.0,0.8,Short,-0.074,,,,Overweight,1,0,31,2,Stressed Short Sleepers
+70,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None,128,85,43,99.33,Stage 1,9728,110.0,0.8,Short,-0.074,,,,Overweight,1,0,31,2,Stressed Short Sleepers
+71,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,32,4,Stressed Short Sleepers
+72,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,32,4,Stressed Short Sleepers
+73,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,32,4,Stressed Short Sleepers
+74,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,0.9,Short,0.058,-1.008,-0.855,0.923,Normal,0,0,32,4,Stressed Short Sleepers
+75,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+76,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+77,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+78,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+79,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+80,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None,125,80,45,95.0,Stage 1,9000,166.67,1.0,Short,0.191,-1.124,-0.855,0.923,Normal,0,0,33,6,Stressed Short Sleepers
+81,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea,131,86,45,101.0,Stage 1,10611,162.5,1.2,Short,-1.543,,,,Overweight,1,1,34,2,Stressed Short Sleepers
+82,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea,131,86,45,101.0,Stage 1,10611,162.5,1.2,Short,-1.543,,,,Overweight,1,1,34,2,Stressed Short Sleepers
+83,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None,128,84,44,98.67,Stage 1,8960,140.0,0.3,Short,0.261,0.044,0.038,0.447,Overweight,1,0,35,2,Stressed Short Sleepers
+84,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None,128,84,44,98.67,Stage 1,8960,140.0,0.3,Short,0.261,0.044,0.038,0.447,Overweight,1,0,35,2,Stressed Short Sleepers
+85,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,133.33,0.0,Adequate,0.198,,,,Normal,0,0,36,2,Balanced Healthy
+86,Female,35,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,37,1,Balanced Healthy
+87,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.597,-1.541,-0.547,0.098,Normal,0,0,38,2,Balanced Healthy
+88,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.597,-1.541,-0.547,0.098,Normal,0,0,38,2,Balanced Healthy
+89,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.464,-1.345,-0.547,0.098,Normal,0,0,39,4,Balanced Healthy
+90,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.464,-1.345,-0.547,0.098,Normal,0,0,39,4,Balanced Healthy
+91,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.464,-1.345,-0.547,0.098,Normal,0,0,39,4,Balanced Healthy
+92,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,83.33,0.0,Adequate,0.464,-1.345,-0.547,0.098,Normal,0,0,39,4,Balanced Healthy
+93,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,133.33,0.0,Adequate,0.198,,,,Normal,0,0,36,2,Balanced Healthy
+94,Male,35,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea,135,88,47,103.67,Stage 1,11340,55.0,0.0,Adequate,-0.669,-0.039,-2.867,-0.258,Obese,2,1,40,1,Stressed Short Sleepers
+95,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,Insomnia,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,1,41,1,Balanced Healthy
+96,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,42,2,Balanced Healthy
+97,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,43,1,Balanced Healthy
+98,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,42,2,Balanced Healthy
+99,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,1.812,1.554,-0.494,Normal,0,0,44,2,Balanced Healthy
+100,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,1.812,1.554,-0.494,Normal,0,0,44,2,Balanced Healthy
+101,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,2.254,1.554,-0.494,Normal,0,0,45,3,Balanced Healthy
+102,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,2.254,1.554,-0.494,Normal,0,0,45,3,Balanced Healthy
+103,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,2.254,1.554,-0.494,Normal,0,0,45,3,Balanced Healthy
+104,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Sleep Apnea,129,84,45,99.0,Stage 1,9546,137.14,0.4,Short,-1.606,-0.398,-2.994,2.331,Overweight,1,1,46,1,Stressed Short Sleepers
+105,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,Sleep Apnea,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,2.254,1.554,-0.494,Normal,0,1,47,1,Balanced Healthy
+106,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Insomnia,129,84,45,99.0,Stage 1,9546,137.14,0.4,Short,-1.606,-0.398,-2.994,2.331,Overweight,1,1,48,1,Stressed Short Sleepers
+107,Female,37,Nurse,6.1,6,42,6,Overweight,126/83,77,4200,None,126,83,43,97.33,Stage 1,9702,100.0,0.9,Short,0.058,-0.972,-0.884,0.189,Overweight,1,0,49,1,Stressed Short Sleepers
+108,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None,120,80,40,93.33,Stage 1,8160,100.0,0.0,Adequate,-0.2,-0.367,-0.547,0.098,Normal,0,0,50,2,Balanced Healthy
+109,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None,120,80,40,93.33,Stage 1,8160,100.0,0.0,Adequate,-0.2,-0.367,-0.547,0.098,Normal,0,0,50,2,Balanced Healthy
+110,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.331,-0.039,0.341,-0.258,Normal,0,0,51,3,Balanced Healthy
+111,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+112,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.331,-0.039,0.341,-0.258,Normal,0,0,51,3,Balanced Healthy
+113,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+114,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.331,-0.039,0.341,-0.258,Normal,0,0,51,3,Balanced Healthy
+115,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+116,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+117,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+118,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+119,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+120,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+121,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+122,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+123,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+124,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+125,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.597,0.276,0.236,-0.481,Normal,0,0,52,13,Balanced Healthy
+126,Female,37,Nurse,7.5,8,60,4,Normal Weight,120/80,70,8000,None,120,80,40,93.33,Stage 1,8400,133.33,0.0,Adequate,0.198,0.441,0.407,-0.647,Normal,0,0,53,1,Balanced Healthy
+127,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+128,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+129,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+130,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+131,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+132,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+133,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+134,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+135,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+136,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.464,-0.409,0.341,-0.258,Normal,0,0,54,7,Balanced Healthy
+137,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+138,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.73,-1.149,0.341,-0.258,Normal,0,0,56,3,Balanced Healthy
+139,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+140,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.73,-1.149,0.341,-0.258,Normal,0,0,56,3,Balanced Healthy
+141,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+142,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.73,-1.149,0.341,-0.258,Normal,0,0,56,3,Balanced Healthy
+143,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+144,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None,115,75,40,88.33,Normal,7820,116.67,0.0,Adequate,0.73,-0.043,0.236,-0.481,Normal,0,0,55,8,Balanced Healthy
+145,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,Sleep Apnea,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.73,-1.149,0.341,-0.258,Normal,0,1,57,1,Balanced Healthy
+146,Female,38,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea,135,88,47,103.67,Stage 1,11340,55.0,0.0,Adequate,-0.669,-0.039,-2.867,-0.258,Obese,2,1,58,1,Stressed Short Sleepers
+147,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,Insomnia,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,1,59,1,Balanced Healthy
+148,Male,39,Engineer,6.5,5,40,7,Overweight,132/87,80,4000,Insomnia,132,87,45,102.0,Stage 1,10560,100.0,0.5,Short,-1.473,-2.911,-4.525,2.735,Overweight,1,1,60,1,Stressed Short Sleepers
+149,Female,39,Lawyer,6.9,7,50,6,Normal Weight,128/85,75,5500,None,128,85,43,99.33,Stage 1,9600,110.0,0.1,Short,-0.004,-1.888,-2.867,3.789,Normal,0,0,61,1,Stressed Short Sleepers
+150,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None,115,78,37,90.33,Normal,7705,93.75,0.0,Adequate,0.534,2.834,2.417,-1.291,Normal,0,0,62,2,Balanced Healthy
+151,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None,115,78,37,90.33,Normal,7705,93.75,0.0,Adequate,0.534,2.834,2.417,-1.291,Normal,0,0,62,2,Balanced Healthy
+152,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+153,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+154,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+155,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+156,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+157,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+158,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+159,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+160,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+161,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,133.33,0.0,Adequate,0.597,-0.779,0.341,-0.258,Normal,0,0,63,10,Balanced Healthy
+162,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None,119,77,42,91.0,Normal,8687,132.73,0.0,Adequate,0.597,0.276,0.236,1.138,Normal,0,0,64,2,Balanced Healthy
+163,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None,119,77,42,91.0,Normal,8687,132.73,0.0,Adequate,0.597,0.276,0.236,1.138,Normal,0,0,64,2,Balanced Healthy
+164,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,88.89,0.0,Adequate,-0.333,1.809,0.341,-0.258,Normal,0,0,65,2,Balanced Healthy
+165,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None,130,85,45,100.0,Stage 1,8840,88.89,0.0,Adequate,-0.333,1.809,0.341,-0.258,Normal,0,0,65,2,Balanced Healthy
+166,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,Insomnia,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,0.065,0.7,0.341,-0.258,Normal,0,1,66,1,Balanced Healthy
+167,Male,41,Engineer,7.3,8,70,6,Normal Weight,121/79,72,6200,None,121,79,42,93.0,Elevated,8712,88.57,0.0,Adequate,0.464,-1.345,-0.547,1.856,Normal,0,0,67,1,Balanced Healthy
+168,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None,125,82,43,96.33,Stage 1,9000,109.09,0.0,Adequate,-0.27,-1.149,-2.867,3.789,Overweight,1,0,68,2,Stressed Short Sleepers
+169,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None,125,82,43,96.33,Stage 1,9000,109.09,0.0,Adequate,-0.27,-1.149,-2.867,3.789,Overweight,1,0,68,2,Stressed Short Sleepers
+170,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,1.07,0.341,-0.258,Normal,0,0,69,5,Balanced Healthy
+171,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,1.07,0.341,-0.258,Normal,0,0,69,5,Balanced Healthy
+172,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,1.07,0.341,-0.258,Normal,0,0,69,5,Balanced Healthy
+173,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,1.07,0.341,-0.258,Normal,0,0,69,5,Balanced Healthy
+174,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,1.07,0.341,-0.258,Normal,0,0,69,5,Balanced Healthy
+175,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,0.065,0.7,0.341,-0.258,Normal,0,0,70,3,Balanced Healthy
+176,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,0.065,0.7,0.341,-0.258,Normal,0,0,70,3,Balanced Healthy
+177,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,0.065,0.7,0.341,-0.258,Normal,0,0,70,3,Balanced Healthy
+178,Male,42,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,71,1,Stressed Short Sleepers
+179,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+180,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+181,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+182,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+183,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+184,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,1.44,0.341,-0.258,Normal,0,0,72,6,Balanced Healthy
+185,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea,130,85,45,100.0,Stage 1,10140,111.11,0.2,Short,-0.872,0.486,-1.478,2.331,Overweight,1,1,73,2,Stressed Short Sleepers
+186,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea,130,85,45,100.0,Stage 1,10140,111.11,0.2,Short,-0.872,0.486,-1.478,2.331,Overweight,1,1,73,2,Stressed Short Sleepers
+187,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.3,Short,0.261,0.044,0.038,-0.494,Overweight,1,1,74,3,Well-Rested Hypertensive
+188,Male,43,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,75,1,Stressed Short Sleepers
+189,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.3,Short,0.261,0.044,0.038,-0.494,Overweight,1,1,74,3,Well-Rested Hypertensive
+190,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+191,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.3,Short,0.261,0.044,0.038,-0.494,Overweight,1,1,74,3,Well-Rested Hypertensive
+192,Male,43,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,77,1,Stressed Short Sleepers
+193,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+194,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+195,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+196,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+197,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+198,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+199,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+200,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+201,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,76,10,Stressed Short Sleepers
+202,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,1,78,2,Balanced Healthy
+203,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,1,78,2,Balanced Healthy
+204,Male,43,Engineer,6.9,6,47,7,Normal Weight,117/76,69,6800,None,117,76,41,89.67,Normal,8073,144.68,0.1,Short,-1.004,-2.128,-3.199,2.735,Normal,0,0,79,1,Balanced Healthy
+205,Male,43,Engineer,7.6,8,75,4,Overweight,122/80,68,6800,None,122,80,42,94.0,Stage 1,8296,90.67,0.0,Adequate,0.065,-0.758,-0.547,0.098,Overweight,1,0,80,1,Balanced Healthy
+206,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,-0.562,-0.547,0.977,Normal,0,0,81,5,Balanced Healthy
+207,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,-0.562,-0.547,0.977,Normal,0,0,81,5,Balanced Healthy
+208,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,-0.562,-0.547,0.977,Normal,0,0,81,5,Balanced Healthy
+209,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,-0.562,-0.547,0.977,Normal,0,0,81,5,Balanced Healthy
+210,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+211,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.067,-0.562,-0.547,0.977,Normal,0,0,81,5,Balanced Healthy
+212,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+213,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+214,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+215,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+216,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+217,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+218,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,0,82,8,Balanced Healthy
+219,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Sleep Apnea,130,85,45,100.0,Stage 1,9100,88.89,0.0,Adequate,-0.2,-0.367,-0.547,0.977,Normal,0,1,83,1,Balanced Healthy
+220,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Sleep Apnea,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,1,84,1,Stressed Short Sleepers
+221,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+222,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,86,5,Stressed Short Sleepers
+223,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+224,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,86,5,Stressed Short Sleepers
+225,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+226,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+227,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+228,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+229,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+230,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+231,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+232,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+233,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+234,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+235,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,85,7,Well-Rested Hypertensive
+236,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+237,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,86,5,Stressed Short Sleepers
+238,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,88,4,Well-Rested Hypertensive
+239,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+240,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,86,5,Stressed Short Sleepers
+241,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,88,4,Well-Rested Hypertensive
+242,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+243,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,1,86,5,Stressed Short Sleepers
+244,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,88,4,Well-Rested Hypertensive
+245,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+246,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,88,4,Well-Rested Hypertensive
+247,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.7,Short,-0.207,-1.149,,,Overweight,1,1,87,11,Stressed Short Sleepers
+248,Male,44,Engineer,6.8,7,45,7,Overweight,130/85,78,5000,Insomnia,130,85,45,100.0,Stage 1,10140,111.11,0.2,Short,0.128,-2.323,-1.873,2.735,Overweight,1,1,89,1,Stressed Short Sleepers
+249,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,None,130,85,45,100.0,Stage 1,9360,133.33,0.6,Short,-0.34,-0.035,,,Overweight,1,0,90,1,Stressed Short Sleepers
+250,Male,44,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,None,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,-0.473,1.079,,,Overweight,1,0,91,1,Stressed Short Sleepers
+251,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,200.0,0.2,Short,0.128,0.486,0.038,1.389,Overweight,1,1,92,2,Well-Rested Hypertensive
+252,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,200.0,0.2,Short,0.128,0.486,0.038,1.389,Overweight,1,1,92,2,Well-Rested Hypertensive
+253,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,93,4,Well-Rested Hypertensive
+254,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,93,4,Well-Rested Hypertensive
+255,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,93,4,Well-Rested Hypertensive
+256,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.5,Short,0.527,-0.84,0.038,-0.494,Overweight,1,1,93,4,Well-Rested Hypertensive
+257,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,94,5,Well-Rested Hypertensive
+258,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,94,5,Well-Rested Hypertensive
+259,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,94,5,Well-Rested Hypertensive
+260,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,94,5,Well-Rested Hypertensive
+261,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,1,94,5,Well-Rested Hypertensive
+262,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,0,95,2,Well-Rested Hypertensive
+263,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None,135,90,45,105.0,Stage 2,8775,133.33,0.4,Short,0.394,-0.398,0.038,-0.494,Overweight,1,0,95,2,Well-Rested Hypertensive
+264,Female,45,Manager,6.9,7,55,5,Overweight,125/82,75,5500,None,125,82,43,96.33,Stage 1,9375,100.0,0.1,Short,-0.004,,,,Overweight,1,0,96,1,Stressed Short Sleepers
+265,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia,142,92,50,108.67,Stage 2,11786,53.85,0.0,Adequate,-0.536,0.382,0.465,-1.262,Obese,2,1,97,2,Well-Rested Hypertensive
+266,Female,48,Nurse,5.9,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.1,Short,0.324,-1.174,-0.884,1.025,Overweight,1,1,98,1,High-Activity High-Stress
+267,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia,142,92,50,108.67,Stage 2,11786,53.85,0.0,Adequate,-0.536,0.382,0.465,-1.262,Obese,2,1,97,2,Well-Rested Hypertensive
+268,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,None,140,95,45,110.0,Stage 2,10500,111.11,0.8,Short,-0.074,-0.871,-0.884,1.025,Overweight,1,0,99,1,High-Activity High-Stress
+269,Female,49,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,100,1,High-Activity High-Stress
+270,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,101,4,High-Activity High-Stress
+271,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,101,4,High-Activity High-Stress
+272,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,101,4,High-Activity High-Stress
+273,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,101,4,High-Activity High-Stress
+274,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.8,Short,-0.074,-0.871,-0.884,1.025,Overweight,1,1,102,3,High-Activity High-Stress
+275,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.8,Short,-0.074,-0.871,-0.884,1.025,Overweight,1,1,102,3,High-Activity High-Stress
+276,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.8,Short,-0.074,-0.871,-0.884,1.025,Overweight,1,1,102,3,High-Activity High-Stress
+277,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea,139,91,48,107.0,Stage 2,11954,43.53,0.0,Adequate,0.401,1.308,3.104,-2.719,Obese,2,1,103,2,Well-Rested Hypertensive
+278,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea,139,91,48,107.0,Stage 2,11954,43.53,0.0,Adequate,0.401,1.308,3.104,-2.719,Obese,2,1,103,2,Well-Rested Hypertensive
+279,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Insomnia,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,104,1,High-Activity High-Stress
+280,Female,50,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.135,0.612,0.779,-0.781,Normal,0,0,105,1,Low-Activity Deep Sleepers
+281,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,None,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,0,106,1,High-Activity High-Stress
+282,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+283,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+284,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+285,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+286,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+287,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+288,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+289,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+290,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+291,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+292,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+293,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+294,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+295,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+296,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,108,10,High-Activity High-Stress
+297,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+298,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,107,7,High-Activity High-Stress
+299,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,109,4,Low-Activity Deep Sleepers
+300,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,109,4,Low-Activity Deep Sleepers
+301,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,109,4,Low-Activity Deep Sleepers
+302,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,109,4,Low-Activity Deep Sleepers
+303,Female,51,Nurse,7.1,7,55,6,Normal Weight,125/82,72,6000,None,125,82,43,96.33,Stage 1,9000,109.09,0.0,Adequate,-0.27,0.037,-0.239,0.189,Normal,0,0,110,1,Balanced Healthy
+304,Female,51,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,1.0,Short,0.191,-1.073,-0.884,1.025,Overweight,1,1,111,1,High-Activity High-Stress
+305,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,112,2,High-Activity High-Stress
+306,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea,140,95,45,110.0,Stage 2,10500,111.11,0.9,Short,0.058,-0.972,-0.884,1.025,Overweight,1,1,112,2,High-Activity High-Stress
+307,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,0.527,-1.961,-1.945,1.948,Overweight,1,1,113,2,Stressed Short Sleepers
+308,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.5,Short,0.527,-1.961,-1.945,1.948,Overweight,1,1,113,2,Stressed Short Sleepers
+309,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.4,Short,0.394,-1.641,-1.945,1.948,Overweight,1,1,114,4,Stressed Short Sleepers
+310,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.4,Short,0.394,-1.641,-1.945,1.948,Overweight,1,1,114,4,Stressed Short Sleepers
+311,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.4,Short,0.394,-1.641,-1.945,1.948,Overweight,1,1,114,4,Stressed Short Sleepers
+312,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia,130,85,45,100.0,Stage 1,9360,133.33,0.4,Short,0.394,-1.641,-1.945,1.948,Overweight,1,1,114,4,Stressed Short Sleepers
+313,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,115,3,Low-Activity Deep Sleepers
+314,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,115,3,Low-Activity Deep Sleepers
+315,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,115,3,Low-Activity Deep Sleepers
+316,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,Insomnia,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.135,0.612,0.779,-0.781,Normal,0,1,116,1,Low-Activity Deep Sleepers
+317,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+318,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+319,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,118,5,Low-Activity Deep Sleepers
+320,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,118,5,Low-Activity Deep Sleepers
+321,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+322,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,118,5,Low-Activity Deep Sleepers
+323,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,118,5,Low-Activity Deep Sleepers
+324,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+325,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.135,0.612,0.779,-0.781,Normal,0,0,119,3,Low-Activity Deep Sleepers
+326,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+327,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.135,0.612,0.779,-0.781,Normal,0,0,119,3,Low-Activity Deep Sleepers
+328,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+329,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.135,0.612,0.779,-0.781,Normal,0,0,119,3,Low-Activity Deep Sleepers
+330,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+331,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,117,8,Low-Activity Deep Sleepers
+332,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,118,5,Low-Activity Deep Sleepers
+333,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+334,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+335,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+336,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+337,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+338,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,0.003,0.808,0.779,-0.781,Normal,0,0,120,6,Low-Activity Deep Sleepers
+339,Female,54,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None,125,80,45,95.0,Stage 1,8125,166.67,0.0,Adequate,-0.13,1.003,0.779,-0.781,Normal,0,0,121,1,Low-Activity Deep Sleepers
+340,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea,140,95,45,110.0,Stage 2,10080,66.67,0.0,Adequate,0.401,1.047,1.052,-0.647,Overweight,1,1,122,2,Well-Rested Hypertensive
+341,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea,140,95,45,110.0,Stage 2,10080,66.67,0.0,Adequate,0.401,1.047,1.052,-0.647,Overweight,1,1,122,2,Well-Rested Hypertensive
+342,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None,118,75,43,89.33,Normal,7670,111.11,0.0,Adequate,0.268,1.424,3.104,-2.719,Normal,0,0,123,2,Balanced Healthy
+343,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None,118,75,43,89.33,Normal,7670,111.11,0.0,Adequate,0.268,1.424,3.104,-2.719,Normal,0,0,123,2,Balanced Healthy
+344,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,0,124,1,Well-Rested Hypertensive
+345,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,125,5,Well-Rested Hypertensive
+346,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,125,5,Well-Rested Hypertensive
+347,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,125,5,Well-Rested Hypertensive
+348,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,125,5,Well-Rested Hypertensive
+349,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,125,5,Well-Rested Hypertensive
+350,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,126,3,Well-Rested Hypertensive
+351,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,126,3,Well-Rested Hypertensive
+352,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,126,3,Well-Rested Hypertensive
+353,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+354,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+355,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+356,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+357,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+358,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,127,6,Well-Rested Hypertensive
+359,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,None,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,0,128,1,Well-Rested Hypertensive
+360,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,0,129,1,Well-Rested Hypertensive
+361,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,130,4,Well-Rested Hypertensive
+362,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,130,4,Well-Rested Hypertensive
+363,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,130,4,Well-Rested Hypertensive
+364,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.268,1.148,1.052,-1.065,Overweight,1,1,130,4,Well-Rested Hypertensive
+365,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,131,4,Well-Rested Hypertensive
+366,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,131,4,Well-Rested Hypertensive
+367,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive
+368,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,131,4,Well-Rested Hypertensive
+369,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive
+370,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive
+371,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.534,0.946,1.052,-1.065,Overweight,1,1,131,4,Well-Rested Hypertensive
+372,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive
+373,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive
+374,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea,140,95,45,110.0,Stage 2,9520,93.33,0.0,Adequate,0.401,1.047,1.052,-1.065,Overweight,1,1,132,6,Well-Rested Hypertensive

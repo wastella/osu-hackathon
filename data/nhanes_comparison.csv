@@ -1,0 +1,73 @@
+section,group,metric,kaggle,nhanes,kaggle_n,nhanes_n,diff
+Overall,All,Mean sleep hours,7.13,6.79,374,3319,0.34
+Overall,All,% sleeping under 7 h,41.44,38.48,374,3319,2.96
+Overall,All,% with sleep disorder (Kaggle) / sleep trouble (NHANES),41.44,23.07,374,3320,18.37
+Overall,All,Mean heart rate,70.17,72.04,374,3211,-1.87
+Overall,All,Mean systolic BP,128.55,118.6,374,3210,9.95
+Overall,All,Mean diastolic BP,84.65,72.77,374,3208,11.88
+Overall,All,Std dev of sleep hours,0.8,1.18,374,3319,-0.38
+BMI mix,Normal,% of sample,57.75,26.91,216,875,30.84
+BMI mix,Overweight,% of sample,39.57,36.84,148,1198,2.73
+BMI mix,Obese,% of sample,2.67,36.25,10,1179,-33.58
+By BMI,Normal,Mean sleep hours,7.39,6.88,216,875,0.51
+By BMI,Normal,% sleeping under 7 h,18.06,31.2,216,875,-13.14
+By BMI,Normal,% with sleep disorder (Kaggle) / sleep trouble (NHANES),7.41,23.89,216,875,-16.48
+By BMI,Normal,Mean heart rate,68.98,70.68,216,861,-1.7
+By BMI,Normal,Mean systolic BP,123.61,114.65,216,861,8.96
+By BMI,Normal,Mean diastolic BP,80.6,69.91,216,861,10.69
+By BMI,Overweight,Mean sleep hours,6.77,6.82,148,1198,-0.05
+By BMI,Overweight,% sleeping under 7 h,75.68,38.15,148,1198,37.53
+By BMI,Overweight,% with sleep disorder (Kaggle) / sleep trouble (NHANES),87.16,20.2,148,1198,66.96
+By BMI,Overweight,Mean heart rate,70.95,70.41,148,1154,0.54
+By BMI,Overweight,Mean systolic BP,135.05,118.68,148,1154,16.37
+By BMI,Overweight,Mean diastolic BP,90.18,72.64,148,1154,17.54
+By BMI,Obese,Mean sleep hours,6.96,6.69,10,1178,0.27
+By BMI,Obese,% sleeping under 7 h,40.0,44.65,10,1178,-4.65
+By BMI,Obese,% with sleep disorder (Kaggle) / sleep trouble (NHANES),100.0,25.61,10,1179,74.39
+By BMI,Obese,Mean heart rate,84.3,74.76,10,1135,9.54
+By BMI,Obese,Mean systolic BP,139.2,121.99,10,1134,17.21
+By BMI,Obese,Mean diastolic BP,90.2,75.36,10,1132,14.84
+By gender,Female,Mean sleep hours,7.23,6.9,185,1484,0.33
+By gender,Female,% sleeping under 7 h,42.16,35.18,185,1484,6.98
+By gender,Female,% with sleep disorder (Kaggle) / sleep trouble (NHANES),55.68,27.9,185,1484,27.78
+By gender,Female,Mean heart rate,69.26,73.75,185,1426,-4.49
+By gender,Female,Mean systolic BP,130.2,115.44,185,1425,14.76
+By gender,Female,Mean diastolic BP,86.32,70.91,185,1424,15.41
+By gender,Male,Mean sleep hours,7.04,6.7,189,1835,0.34
+By gender,Male,% sleeping under 7 h,40.74,41.14,189,1835,-0.4
+By gender,Male,% with sleep disorder (Kaggle) / sleep trouble (NHANES),27.51,19.17,189,1836,8.34
+By gender,Male,Mean heart rate,71.05,70.68,189,1785,0.37
+By gender,Male,Mean systolic BP,126.94,121.13,189,1785,5.81
+By gender,Male,Mean diastolic BP,83.02,74.26,189,1784,8.76
+By age band,27-39,Mean sleep hours,7.0,6.86,161,1321,0.14
+By age band,27-39,% sleeping under 7 h,32.92,37.85,161,1321,-4.93
+By age band,27-39,% with sleep disorder (Kaggle) / sleep trouble (NHANES),13.66,18.62,161,1321,-4.96
+By age band,27-39,Mean heart rate,70.59,73.75,161,1266,-3.16
+By age band,27-39,Mean systolic BP,123.09,115.09,161,1266,8.0
+By age band,27-39,Mean diastolic BP,80.57,71.22,161,1266,9.35
+By age band,40-49,Mean sleep hours,6.91,6.7,117,1067,0.21
+By age band,40-49,% sleeping under 7 h,63.25,40.67,117,1067,22.58
+By age band,40-49,% with sleep disorder (Kaggle) / sleep trouble (NHANES),64.1,23.34,117,1067,40.76
+By age band,40-49,Mean heart rate,70.61,71.3,117,1041,-0.69
+By age band,40-49,Mean systolic BP,131.79,118.33,117,1040,13.46
+By age band,40-49,Mean diastolic BP,86.85,73.05,117,1039,13.8
+By age band,50-59,Mean sleep hours,7.63,6.79,96,931,0.84
+By age band,50-59,% sleeping under 7 h,29.17,36.84,96,931,-7.67
+By age band,50-59,% with sleep disorder (Kaggle) / sleep trouble (NHANES),60.42,29.08,96,932,31.34
+By age band,50-59,Mean heart rate,68.92,70.51,96,904,-1.59
+By age band,50-59,Mean systolic BP,133.76,123.83,96,904,9.93
+By age band,50-59,Mean diastolic BP,88.82,74.64,96,903,14.18
+By activity,More active,Mean sleep hours,7.37,6.87,213,1903,0.5
+By activity,More active,% sleeping under 7 h,15.96,34.89,213,1903,-18.93
+By activity,Less active,Mean sleep hours,6.82,6.68,161,1416,0.14
+By activity,Less active,% sleeping under 7 h,75.16,43.29,161,1416,31.87
+Correlation (Pearson r),age vs sleep_hours,r,0.345,-0.038,374,3319,0.38
+Correlation (Pearson r),age vs systolic,r,0.606,0.252,374,3210,0.35
+Correlation (Pearson r),bmi_ord vs sleep_hours,r,-0.35,-0.067,374,3251,-0.28
+Correlation (Pearson r),bmi_ord vs systolic,r,0.74,0.197,374,3149,0.54
+Correlation (Pearson r),bmi_ord vs sleep_problem,r,0.785,0.021,374,3252,0.76
+Correlation (Pearson r),sleep_hours vs heart_rate,r,-0.516,0.006,374,3210,-0.52
+Correlation (Pearson r),sleep_hours vs sleep_problem,r,-0.339,-0.136,374,3319,-0.2
+Correlation (Pearson r),sleep_hours vs systolic,r,-0.18,-0.082,374,3209,-0.1
+Correlation (Pearson r),active vs sleep_hours,r,0.343,0.083,374,3319,0.26
+Correlation (Pearson r),heart_rate vs systolic,r,0.294,0.069,374,3210,0.22
