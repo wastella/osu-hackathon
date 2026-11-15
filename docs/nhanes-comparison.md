@@ -1,6 +1,6 @@
-# How does the Sleep Health dataset compare with real people?
+# Synthetic vs. Real Sleep Data 
 
-The Kaggle Sleep Health and Lifestyle dataset is synthetic. To see how realistic it is, we compared it with NHANES, a real health survey of Americans run by the CDC.
+This dataset is boring. Analyzing it traditionally won't prove to be fruitful because there simply isn't much you can do with a dataset this remedial. The key insight here, then, is why the dataset is so remedial. The reason, and our main hypothesis, is because it is synthetic. Synthetic data can be very useful, but only if done right. We're going to argue that this is a **bad** synthetic dataset because it is not realistically distributed. That means every other team's insights about the data should be taken with huge skepticism, and you should artificially deflate their conclusions. To do this, we compared it with NHANES, a real health survey of Americans run by the CDC.
 
 **Short answer:** the synthetic data gets the averages roughly right, but it greatly exaggerates how strongly sleep, weight, age and blood pressure are linked.
 
@@ -51,29 +51,21 @@ Correlation runs from −1 to 1; values near 0 mean no link.
 | Age vs sleep hours | 0.35 | −0.04 |
 | Activity vs sleep hours | 0.34 | 0.08 |
 
-## Key takeaways
+## Three lessons about synthetic data
 
-- **BMI is the biggest gap.** In the Kaggle data, being overweight almost guarantees a sleep disorder. In real data, BMI barely predicts reported sleep trouble.
-- **Real people are noisier.** Every link is much weaker in NHANES, and real sleep hours vary more (standard deviation 1.18 vs 0.80).
-- **Older people do not sleep more.** The Kaggle data has 50–59-year-olds sleeping the most (7.6 hours). NHANES shows no age trend.
-- **The direction is usually right; the strength is not.** Where NHANES shows any link at all, it mostly points the same way as Kaggle, just far more weakly.
+**1. Rules without noise are not data.** In the Kaggle data, 87% of overweight people have a sleep disorder against 7% of normal-weight people (correlation 0.79). In NHANES the rates are 20% and 24% (correlation 0.02). The generator seems to have turned a textbook belief into a near-certain rule. Real health outcomes have many causes, so a good generator must keep the randomness: each variable should only partly predict the others.
 
-## Caveats
+**2. Get the population mix right first.** Only 3% of the Kaggle sample is obese, against 36% of real working adults. With that group missing, "Overweight" has to carry every bad outcome and stops meaning what it means in real life. If the basic proportions are wrong, every comparison between groups is wrong too.
 
-- **"Sleep problem" means different things.** Kaggle records a diagnosed insomnia or sleep apnea label. NHANES asks whether you have ever told a doctor you have trouble sleeping. This explains some of the gap in overall rates, but not why the Kaggle rate tracks BMI so closely.
-- **"Active" means different things.** Kaggle: at or above the median daily activity minutes. NHANES: a yes/no answer about moderate or vigorous activity.
-- **NHANES sleep is in whole hours**, so the under-7-hours share is only roughly comparable.
-- **Only 10 Kaggle rows are obese**, so figures for that group are unreliable.
-- **NHANES is from 2009–2012**, and we did not test how much the working-adults filter changes the results.
-- **Correlation is not causation** in either dataset.
+**3. The right direction can hide the wrong size.** Exercise helps sleep in both datasets, but short sleep falls from 75% to 16% with activity in Kaggle and only from 43% to 35% in NHANES: a 59-point effect against an 8-point one. Because the result sounds sensible, nobody questions it. Effect sizes must be calibrated against real data, and believable results need checking as much as surprising ones.
 
-## Reproduce
+## Data used
 
-```
-python3 scripts/engineer_features.py
-python3 scripts/nhanes_comparison.py
-```
+The Kaggle data behind this comparison is saved as `data/kaggle_comparison_subset.csv` (all 374 rows). It has six original columns and five derived ones:
 
-- Full results: `data/nhanes_comparison.csv`
-- NHANES source: `data/external/nhanes/NHANES.csv`, from the [NHANES R package](https://github.com/ProjectMOSAIC/NHANES) (CDC/NCHS data, 2009–2012)
-- Kaggle source: [Sleep Health and Lifestyle Dataset](https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset)
+- **Original:** `Person ID`, `Gender`, `Age`, `Sleep Duration`, `Physical Activity Level`, `Heart Rate`
+- **`systolic`, `diastolic`:** the `Blood Pressure` text (e.g. `126/83`) split into two numbers
+- **`bmi_clean`, `bmi_ordinal`:** BMI category with "Normal Weight" merged into "Normal", and the same as 0/1/2
+- **`has_sleep_disorder`:** 1 if the person has insomnia or sleep apnea, otherwise 0
+
+These are simple cleanups of the original columns, not new information.

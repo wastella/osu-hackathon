@@ -20,8 +20,18 @@ AGE_LABELS = ["27-39", "40-49", "50-59"]
 BMI_ORDER = ["Normal", "Overweight", "Obese"]
 
 
+SUBSET_OUT = ROOT / "data" / "kaggle_comparison_subset.csv"
+# The Kaggle columns this comparison actually uses: the original ones first,
+# then the only engineered features it relies on.
+SUBSET_COLS = [
+    "Person ID", "Gender", "Age", "Sleep Duration", "Physical Activity Level", "Heart Rate",
+    "systolic", "diastolic", "bmi_clean", "bmi_ordinal", "has_sleep_disorder",
+]
+
+
 def load_kaggle() -> pd.DataFrame:
     k = pd.read_csv(KAGGLE, keep_default_na=False, na_values=[""])
+    k[SUBSET_COLS].to_csv(SUBSET_OUT, index=False)
     return pd.DataFrame(
         {
             "gender": k["Gender"],
