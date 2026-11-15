@@ -1,0 +1,1140 @@
+<title>Sleep on It</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: night-sky scrollytelling. A sticky star chart on the right, story cards scrolling on the left;
+   below it, a "sleep twin" tool and a ledger of what the data can and cannot support.
+   Deliberately single-theme (a night sky), so colors are set explicitly for both hosts. */
+:root {
+  color-scheme: dark;
+  --night: #0d1330;
+  --night-2: #141b3d;
+  --night-3: #1c2550;
+  --rule: #2b3566;
+  --moon: #efe6cc;
+  --moon-2: #b9b6cc;
+  --moon-3: #7f84a6;
+  --insomnia: #d95926;
+  --apnea: #3987e5;
+  --doc: #199e70;
+  --eng: #9085e9;
+  --font-display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(1.9rem, 4vw, 2.6rem);
+  --step-4: clamp(3rem, 9vw, 6.5rem);
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  background:
+    radial-gradient(120% 60% at 70% 0%, #1b2350 0%, transparent 60%),
+    var(--night);
+  color: var(--moon);
+  font: 400 var(--step-0)/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--moon); text-underline-offset: 3px; text-decoration-color: var(--moon-3); }
+a:hover { text-decoration-color: var(--moon); }
+:focus-visible { outline: 2px solid var(--moon); outline-offset: 3px; border-radius: 2px; }
+.wrap {
+  max-width: 1240px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.eyebrow {
+  font: 500 var(--step--1)/1.3 var(--font-data);
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--moon-3);
+}
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: var(--step-4); line-height: 0.95; letter-spacing: -0.02em; }
+h1 em { font-style: italic; }
+h2 { font-size: var(--step-3); line-height: 1.1; }
+h3 { font-size: var(--step-2); line-height: 1.15; }
+p { margin: 0; }
+.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(40px, 8vw, 88px) 24px; display: grid; gap: 28px; }
+.hero-top { display: grid; gap: 18px; max-width: 46rem; }
+.lede { font-size: var(--step-1); color: var(--moon-2); max-width: 40rem; }
+.lede strong { color: var(--moon); font-weight: 500; }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.tile { background: var(--night); padding: 18px 20px; display: grid; gap: 6px; align-content: start; }
+.tile .big { font: 400 clamp(2rem, 4.5vw, 2.8rem)/1 var(--font-display); }
+.tile .lbl { color: var(--moon-2); font-size: var(--step--1); line-height: 1.45; }
+@media (max-width: 720px) { .tiles { grid-template-columns: 1fr; } }
+
+/* ---------- scrolly ---------- */
+.scrolly { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 40px; position: relative; }
+.steps { position: relative; z-index: 2; padding-block: 30vh 40vh; display: grid; gap: 52vh; }
+.step {
+  background: color-mix(in srgb, var(--night-2) 92%, transparent);
+  border: 1px solid var(--rule); border-radius: 8px;
+  padding: 22px 22px 20px; display: grid; gap: 12px;
+  transition: border-color .3s, opacity .3s; opacity: .55;
+}
+.step.is-active { border-color: var(--moon-3); opacity: 1; }
+.step p { color: var(--moon-2); }
+.step p strong { color: var(--moon); font-weight: 500; }
+.step .kicker { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.stat { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; padding-top: 4px; border-top: 1px solid var(--rule); }
+.stat b { font: 400 var(--step-2)/1.2 var(--font-display); color: var(--moon); }
+.stat span { color: var(--moon-3); font-size: var(--step--1); }
+.key { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: var(--step--1); color: var(--moon-2); }
+.key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.chart-col { position: relative; }
+.chart-sticky { position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; padding-block: 24px; gap: 8px; }
+.chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; min-height: 1.6em; }
+.chart-title { font: 500 var(--step--1)/1.3 var(--font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--moon-2); }
+.chart-box { position: relative; min-height: 0; }
+.chart-box svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+.chart-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: var(--step--1); color: var(--moon-3); }
+.nav { display: flex; gap: 6px; }
+.nav button {
+  width: 26px; height: 26px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; padding: 0;
+}
+.nav button::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--moon-3); transition: background .2s, transform .2s; }
+.nav button[aria-current="step"]::after { background: var(--moon); transform: scale(1.35); }
+.nav button:hover::after { background: var(--moon-2); }
+
+/* chart internals */
+.axis path, .axis line { stroke: var(--rule); }
+.axis text { fill: var(--moon-3); font: 400 11px var(--font-data); }
+.grid line { stroke: var(--rule); stroke-opacity: .55; }
+.axis-label { fill: var(--moon-2); font: 500 11px var(--font-data); letter-spacing: .06em; text-transform: uppercase; }
+.ann { fill: var(--moon); font: 400 14px var(--font-body); }
+.ann-sub { fill: var(--moon-2); font: 400 12px var(--font-body); }
+.ann-big { fill: var(--moon); font: italic 400 22px var(--font-display); }
+.grp-name { fill: var(--moon); font: 500 13px var(--font-body); }
+.grp-stat { fill: var(--moon-2); font: 400 12px var(--font-data); }
+.halo { stroke: var(--night); stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; }
+.star { transition: none; }
+svg.twinkle .star:nth-child(7n+1) { animation: tw 3.2s ease-in-out infinite alternate; }
+svg.twinkle .star:nth-child(11n+3) { animation: tw 4.6s ease-in-out infinite alternate-reverse; }
+@keyframes tw { from { opacity: .15; } to { opacity: 1; } }
+.tip {
+  position: absolute; pointer-events: none; z-index: 5; min-width: 180px; max-width: 240px;
+  background: var(--night-3); border: 1px solid var(--rule); border-radius: 6px; padding: 10px 12px;
+  font-size: var(--step--1); line-height: 1.45; color: var(--moon-2); box-shadow: 0 8px 24px rgb(0 0 0 / .35);
+}
+.tip b { color: var(--moon); font-weight: 600; }
+.tip .row { display: flex; justify-content: space-between; gap: 12px; }
+.tip .row span:last-child { font-family: var(--font-data); color: var(--moon); }
+
+@media (max-width: 860px) {
+  .scrolly { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .chart-col { grid-row: 1; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 3; height: 58vh; height: 58dvh; }
+  .chart-sticky { position: relative; height: 100%; padding-block: 10px 6px; background: var(--night); }
+  .steps { grid-row: 2; z-index: 1; padding-block: 4vh 30vh; gap: 40vh; }
+  .step { opacity: 1; }
+  .nav { display: none; }
+}
+
+/* ---------- twin finder ---------- */
+section.block { padding-block: 72px 24px; display: grid; gap: 28px; }
+.block-head { display: grid; gap: 12px; max-width: 44rem; }
+.block-head p { color: var(--moon-2); }
+.twin { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 28px; align-items: start; }
+@media (max-width: 860px) { .twin { grid-template-columns: minmax(0, 1fr); } }
+.controls { display: grid; gap: 18px; background: var(--night-2); border: 1px solid var(--rule); border-radius: 8px; padding: 20px; }
+.ctl { display: grid; gap: 6px; }
+.ctl label { display: flex; justify-content: space-between; gap: 10px; font-size: var(--step--1); color: var(--moon-2); }
+.ctl label output { font-family: var(--font-data); color: var(--moon); }
+input[type=range] { width: 100%; accent-color: var(--moon); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.seg button { font: 500 var(--step--1) var(--font-body); color: var(--moon-2); background: transparent; border: 0; padding: 8px 4px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--night-3); color: var(--moon); }
+.example-note { font-size: var(--step--1); color: var(--moon-3); }
+.result { display: grid; gap: 18px; min-width: 0; }
+.summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; }
+.summary > div { background: var(--night); padding: 14px 16px; display: grid; gap: 4px; }
+.summary .big { font: 400 1.9rem/1 var(--font-display); }
+.summary .lbl { font-size: var(--step--1); color: var(--moon-3); }
+@media (max-width: 520px) { .summary { grid-template-columns: 1fr; } }
+.nbrs { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: var(--step--1); }
+th { text-align: left; font: 500 11px var(--font-data); letter-spacing: .08em; text-transform: uppercase; color: var(--moon-3); padding: 8px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); color: var(--moon-2); vertical-align: middle; }
+td.n { font-family: var(--font-data); font-variant-numeric: tabular-nums; color: var(--moon); white-space: nowrap; }
+.meter { display: inline-flex; gap: 3px; vertical-align: middle; margin-right: 8px; }
+.meter i { width: 6px; height: 6px; border-radius: 50%; background: var(--rule); }
+.meter i.on { background: var(--moon); }
+.pill { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.pill i { width: 8px; height: 8px; border-radius: 50%; }
+.whatif { color: var(--moon-2); font-size: var(--step-0); border-left: 2px solid var(--moon-3); padding-left: 14px; }
+.whatif strong { color: var(--moon); font-weight: 500; }
+
+/* ---------- ledger ---------- */
+.ledger { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+@media (max-width: 860px) { .ledger { grid-template-columns: minmax(0, 1fr); } }
+.ledger h3 { font-size: var(--step-1); font-family: var(--font-body); font-weight: 600; display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+.ledger h3 .mark { font: 500 11px var(--font-data); letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 99px; border: 1px solid var(--rule); color: var(--moon-2); }
+.ledger ul { list-style: none; padding: 0; margin: 0; display: grid; }
+.ledger li { padding: 14px 0; border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent); display: grid; gap: 4px; }
+.ledger li b { font-weight: 500; color: var(--moon); }
+.ledger li span { color: var(--moon-2); font-size: var(--step--1); line-height: 1.55; }
+footer { padding-block: 64px 48px; color: var(--moon-3); font-size: var(--step--1); display: grid; gap: 10px; max-width: 52rem; }
+footer p { line-height: 1.6; }
+@media (prefers-reduced-motion: reduce) {
+  svg.twinkle .star { animation: none !important; }
+  .step { transition: none; }
+}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="hero-top">
+      <div class="eyebrow">Sleep, Health &amp; Lifestyle · 374 rows · 13 variables</div>
+      <h1>Sleep <em>on it</em></h1>
+      <p class="lede">Every star in the sky below is one person from the Sleep Health and Lifestyle dataset. <strong>Bigger stars slept longer, brighter stars slept better.</strong> Scroll, and the sky rearranges itself to answer one question: <strong>what actually travels with a good night's sleep, and how much should we trust the answer?</strong></p>
+    </div>
+    <div class="tiles" aria-label="Headline numbers">
+      <div class="tile"><span class="big num">−0.90</span><span class="lbl">correlation between stress level and sleep quality. The strongest link in the dataset.</span></div>
+      <div class="tile"><span class="big num">+0.19</span><span class="lbl">correlation between daily activity and sleep quality. Weak overall, and it flips direction by job.</span></div>
+      <div class="tile"><span class="big num">132</span><span class="lbl">unique people behind the 374 rows. 242 rows are exact copies of another row.</span></div>
+    </div>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="scrolly" id="scrolly">
+    <div class="steps" id="steps">
+      <article class="step" data-step="sky">
+        <div class="kicker"><span class="eyebrow">The sky</span><span class="eyebrow num">1/9</span></div>
+        <h3>374 sleepers</h3>
+        <p>Doctors, nurses, engineers, teachers, lawyers, accountants and salespeople, aged 27 to 59, each reporting how long they sleep, how well, how stressed they are and how much they move. Hover any star to meet them.</p>
+      </article>
+      <article class="step" data-step="stress">
+        <div class="kicker"><span class="eyebrow">Sleep &amp; stress</span><span class="eyebrow num">2/9</span></div>
+        <h3>Stress is the loudest signal</h3>
+        <p>Sort the stars by stress level and sleep quality falls in a near-straight line. People at stress level 3 average <strong>9.0 / 10</strong> sleep quality and <strong>8.2 hours</strong>. At level 8 it is <strong>5.9 / 10</strong> and <strong>6.1 hours</strong>, about two hours less every night.</p>
+        <div class="stat"><b class="num">r = −0.90</b><span>stress vs quality · −0.81 vs hours · still −0.88 after removing duplicate rows</span></div>
+      </article>
+      <article class="step" data-step="exercise">
+        <div class="kicker"><span class="eyebrow">Activity &amp; sleep</span><span class="eyebrow num">3/9</span></div>
+        <h3>Exercise barely registers</h3>
+        <p>Plot daily activity minutes against sleep quality and the trend line is nearly flat. The most active people (90 min/day) sleep no better on average than people who move 30 minutes. Daily steps show even less: r = +0.02.</p>
+        <div class="stat"><b class="num">r = +0.19</b><span>activity minutes vs sleep quality, all 374 rows</span></div>
+      </article>
+      <article class="step" data-step="simpson">
+        <div class="kicker"><span class="eyebrow">Activity &amp; sleep, again</span><span class="eyebrow num">4/9</span></div>
+        <h3>The flat line hides two opposite stories</h3>
+        <p>Split by occupation and the slope comes back. Among <strong>doctors</strong>, more activity goes with much better sleep. Among <strong>engineers</strong>, it goes with worse sleep. Averaged together, the two cancel out. This is Simpson's paradox: a trend that appears inside groups can vanish or reverse when the groups are pooled.</p>
+        <div class="key"><span><i style="background:var(--doc)"></i>Doctors <span class="num">r = +0.85</span></span><span><i style="background:var(--eng)"></i>Engineers <span class="num">r = −0.54</span></span><span><i style="background:var(--moon-3)"></i>Everyone else</span></div>
+      </article>
+      <article class="step" data-step="jobs">
+        <div class="kicker"><span class="eyebrow">Occupation &amp; disorders</span><span class="eyebrow num">5/9</span></div>
+        <h3>Each job forms its own constellation</h3>
+        <p>Color the stars by sleep disorder and the occupations separate sharply. <strong>84% of nurses</strong> have sleep apnea. <strong>91% of salespeople</strong> and <strong>68% of teachers</strong> have insomnia. Engineers are the calmest group: lowest stress (3.9), best quality (8.4), and 90% with no disorder.</p>
+        <div class="key"><span><i style="background:var(--moon-3)"></i>No disorder</span><span><i style="background:var(--insomnia)"></i>Insomnia</span><span><i style="background:var(--apnea)"></i>Sleep apnea</span></div>
+      </article>
+      <article class="step" data-step="bmi">
+        <div class="kicker"><span class="eyebrow">Body &amp; disorders</span><span class="eyebrow num">6/9</span></div>
+        <h3>But BMI sorts them even better</h3>
+        <p>Regroup the same stars by BMI category. <strong>93% of normal-BMI</strong> people have no disorder. Among overweight people, <strong>87% have one</strong>, and every obese person does. Blood pressure tells a similar story: of the 71 people with systolic pressure of 140 or higher, 86% have sleep apnea.</p>
+        <p>So is it the job, or the body? In this data you can't separate them. All 73 nurses are women, their average age is 52, and 90% are overweight.</p>
+        <div class="key"><span><i style="background:var(--moon-3)"></i>No disorder</span><span><i style="background:var(--insomnia)"></i>Insomnia</span><span><i style="background:var(--apnea)"></i>Sleep apnea</span></div>
+      </article>
+      <article class="step" data-step="clean">
+        <div class="kicker"><span class="eyebrow">A closer look</span><span class="eyebrow num">7/9</span></div>
+        <h3>Too clean to be real?</h3>
+        <p>Compare women aged 50 and over. Same gender, same age band. <strong>89% of the nurses</strong> have sleep apnea, and <strong>none of the other women</strong> do. Real health data almost never splits this cleanly. That made us look harder at where the rows came from.</p>
+        <div class="key"><span><i style="background:var(--moon-3)"></i>No disorder</span><span><i style="background:var(--insomnia)"></i>Insomnia</span><span><i style="background:var(--apnea)"></i>Sleep apnea</span></div>
+      </article>
+      <article class="step" data-step="clones">
+        <div class="kicker"><span class="eyebrow">Checking the data</span><span class="eyebrow num">8/9</span></div>
+        <h3>374 stars, 132 people</h3>
+        <p>Group identical rows and the sky collapses. Only <strong>132 combinations</strong> of values are unique. One profile, a 37-year-old female accountant sleeping 7.2 hours, appears <strong>13 times</strong>. Person IDs are also sorted perfectly by age, and nobody is younger than 27 or older than 59.</p>
+        <p>Everything shown so far still holds on the 132 unique profiles, but the duplicates inflate how confident it looks. This dataset is best treated as illustrative, not as a sample of real people.</p>
+        <div class="stat"><b class="num">65%</b><span>of rows (242 of 374) duplicate another row exactly</span></div>
+      </article>
+      <article class="step" data-step="end">
+        <div class="kicker"><span class="eyebrow">What we learned</span><span class="eyebrow num">9/9</span></div>
+        <h3>Sleep on it</h3>
+        <p>In this dataset, <strong>stress</strong> and <strong>body weight</strong> travel with poor sleep far more than exercise or occupation does. Those are correlations, not causes: stress may wreck sleep, poor sleep may raise stress, or something else may drive both. Try the sleep-twin finder below to see where you would land in the sky.</p>
+      </article>
+    </div>
+    <div class="chart-col">
+      <div class="chart-sticky">
+        <div class="chart-head"><span class="chart-title" id="chart-title">Every person in the dataset</span></div>
+        <div class="chart-box" id="chart-box">
+          <svg id="chart" role="img" aria-labelledby="chart-title"></svg>
+          <div class="tip" id="tip" hidden></div>
+        </div>
+        <div class="chart-foot">
+          <span id="chart-note">Size: hours of sleep · brightness: sleep quality</span>
+          <nav class="nav" id="nav" aria-label="Story chapters"></nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="block" id="twin">
+    <div class="block-head">
+      <div class="eyebrow">Interactive</div>
+      <h2>Find your sleep twins</h2>
+      <p>Set a lifestyle and we find the six unique profiles in the dataset that sit closest to it, weighing stress, activity, steps, age and BMI equally. This describes the dataset, not you. It is a way to explore the patterns, not a health prediction.</p>
+    </div>
+    <div class="twin">
+      <form class="controls" id="twin-form" autocomplete="off">
+        <div class="ctl"><label for="in-stress">Stress level <output id="out-stress" for="in-stress"></output></label><input type="range" id="in-stress" min="1" max="10" step="1" value="6"></div>
+        <div class="ctl"><label for="in-act">Physical activity <output id="out-act" for="in-act"></output></label><input type="range" id="in-act" min="20" max="100" step="5" value="45"></div>
+        <div class="ctl"><label for="in-steps">Daily steps <output id="out-steps" for="in-steps"></output></label><input type="range" id="in-steps" min="2000" max="12000" step="500" value="6000"></div>
+        <div class="ctl"><label for="in-age">Age <output id="out-age" for="in-age"></output></label><input type="range" id="in-age" min="20" max="65" step="1" value="35"></div>
+        <div class="ctl"><span class="ctl-l" id="bmi-l" style="font-size:var(--step--1);color:var(--moon-2)">BMI category</span>
+          <div class="seg" role="group" aria-labelledby="bmi-l" id="in-bmi">
+            <button type="button" id="bmi-normal" data-v="Normal" aria-pressed="true">Normal</button>
+            <button type="button" id="bmi-over" data-v="Overweight" aria-pressed="false">Overweight</button>
+            <button type="button" id="bmi-obese" data-v="Obese" aria-pressed="false">Obese</button>
+          </div>
+        </div>
+        <p class="example-note">Starts with an example profile. Values outside 27–59 years or stress 3–8 fall outside what the dataset covers, so matches get looser.</p>
+      </form>
+      <div class="result">
+        <div class="summary">
+          <div><span class="big num" id="sum-q">–</span><span class="lbl">average sleep quality of your twins (out of 10)</span></div>
+          <div><span class="big num" id="sum-h">–</span><span class="lbl">average hours of sleep</span></div>
+          <div><span class="big num" id="sum-d">–</span><span class="lbl">have a sleep disorder</span></div>
+        </div>
+        <p class="whatif" id="whatif"></p>
+        <div class="nbrs">
+          <table>
+            <thead><tr><th>Twin</th><th>Stress</th><th>Activity</th><th>Sleep quality</th><th>Hours</th><th>Disorder</th><th>Rows</th></tr></thead>
+            <tbody id="nbr-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="ledger">
+    <div class="block-head">
+      <div class="eyebrow">Thinking critically</div>
+      <h2>What the data can and can't tell us</h2>
+      <p>A pattern in a dataset is not a cause. Here is where we draw the line on each finding.</p>
+    </div>
+    <div class="ledger">
+      <div>
+        <h3><span class="mark">Supported</span>Within this dataset</h3>
+        <ul>
+          <li><b>Higher stress goes with shorter, worse sleep.</b><span>r = −0.90 with quality and −0.81 with hours, and −0.88 on the 132 unique profiles. It holds inside every occupation too (−0.75 to −0.98).</span></li>
+          <li><b>Overweight and obese BMI go with sleep disorders.</b><span>88% of the 158 overweight or obese rows have insomnia or apnea, against 7% of normal-BMI rows.</span></li>
+          <li><b>The activity–sleep link depends on the group.</b><span>Pooled r = +0.19, but +0.85 for doctors, +0.96 for accountants and −0.54 for engineers.</span></li>
+          <li><b>Occupations differ sharply in disorders.</b><span>Apnea dominates nurses (84%), insomnia dominates salespeople (91%) and teachers (68%).</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="mark">Not supported</span>Claims we avoid</h3>
+        <ul>
+          <li><b>"Stress causes poor sleep."</b><span>The arrow could point the other way (bad sleep raises stress), or a third factor like workload could drive both. The data was collected at a single point in time, so it can't show order.</span></li>
+          <li><b>"Nursing causes sleep apnea."</b><span>Occupation is tangled with gender, age and BMI: every nurse is a woman and 90% are overweight. Job and body can't be separated here.</span></li>
+          <li><b>"Exercise doesn't matter for sleep."</b><span>A flat pooled line hides real within-group slopes, and activity here is a single self-reported number.</span></li>
+          <li><b>"These rates describe real workers."</b><span>65% of rows are duplicates, IDs are sorted by age, and the subgroups split too cleanly. The dataset looks generated, so its patterns describe the dataset, not the population.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="eyebrow">Method</div>
+    <p>Data: <a href="https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset" target="_blank" rel="noopener">Sleep Health and Lifestyle Dataset</a> (Kaggle), 374 rows. "Normal Weight" was merged into "Normal" for BMI. Correlations are Pearson r on all rows unless noted; "unique profiles" means rows that match on every column except Person ID. Disorder shares are row counts within each group. Every chart on this page is computed live from the embedded CSV; the same figures can be reproduced with the Python scripts in the project's <code>analysis/</code> folder.</p>
+    <p>Navigate the story with the dots under the chart, or press <span class="num">J</span> / <span class="num">K</span> to step forward and back while presenting.</p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script id="csv" type="text/plain">Person ID,Gender,Age,Occupation,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Blood Pressure,Heart Rate,Daily Steps,Sleep Disorder
+1,Male,27,Software Engineer,6.1,6,42,6,Overweight,126/83,77,4200,None
+2,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None
+3,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None
+4,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea
+5,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea
+6,Male,28,Software Engineer,5.9,4,30,8,Obese,140/90,85,3000,Insomnia
+7,Male,29,Teacher,6.3,6,40,7,Obese,140/90,82,3500,Insomnia
+8,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+9,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+10,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+11,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None
+12,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+13,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None
+14,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+15,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+16,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+17,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Sleep Apnea
+18,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,Sleep Apnea
+19,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Insomnia
+20,Male,30,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+21,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+22,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+23,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+24,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+25,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+26,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+27,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+28,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+29,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+30,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+31,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Sleep Apnea
+32,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Insomnia
+33,Female,31,Nurse,7.9,8,75,4,Normal Weight,117/76,69,6800,None
+34,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+35,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+36,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+37,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+38,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+39,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+40,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+41,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+42,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+43,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+44,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+45,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+46,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+47,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+48,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+49,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+50,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,Sleep Apnea
+51,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None
+52,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None
+53,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+54,Male,32,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+55,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+56,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+57,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+58,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+59,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+60,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+61,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+62,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+63,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+64,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+65,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+66,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+67,Male,32,Accountant,7.2,8,50,6,Normal Weight,118/76,68,7000,None
+68,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,Insomnia
+69,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None
+70,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None
+71,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+72,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+73,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+74,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+75,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+76,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+77,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+78,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+79,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+80,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+81,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea
+82,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea
+83,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None
+84,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None
+85,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None
+86,Female,35,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+87,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None
+88,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None
+89,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+90,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+91,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+92,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+93,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None
+94,Male,35,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea
+95,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,Insomnia
+96,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+97,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+98,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+99,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None
+100,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None
+101,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+102,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+103,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+104,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Sleep Apnea
+105,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,Sleep Apnea
+106,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Insomnia
+107,Female,37,Nurse,6.1,6,42,6,Overweight,126/83,77,4200,None
+108,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None
+109,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None
+110,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+111,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+112,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+113,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+114,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+115,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+116,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+117,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+118,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+119,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+120,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+121,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+122,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+123,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+124,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+125,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+126,Female,37,Nurse,7.5,8,60,4,Normal Weight,120/80,70,8000,None
+127,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+128,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+129,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+130,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+131,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+132,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+133,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+134,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+135,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+136,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+137,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+138,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+139,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+140,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+141,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+142,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+143,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+144,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+145,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,Sleep Apnea
+146,Female,38,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea
+147,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,Insomnia
+148,Male,39,Engineer,6.5,5,40,7,Overweight,132/87,80,4000,Insomnia
+149,Female,39,Lawyer,6.9,7,50,6,Normal Weight,128/85,75,5500,None
+150,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None
+151,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None
+152,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+153,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+154,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+155,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+156,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+157,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+158,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+159,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+160,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+161,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+162,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None
+163,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None
+164,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None
+165,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None
+166,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,Insomnia
+167,Male,41,Engineer,7.3,8,70,6,Normal Weight,121/79,72,6200,None
+168,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None
+169,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None
+170,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+171,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+172,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+173,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+174,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+175,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+176,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+177,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+178,Male,42,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+179,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+180,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+181,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+182,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+183,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+184,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+185,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea
+186,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea
+187,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+188,Male,43,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+189,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+190,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+191,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+192,Male,43,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+193,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+194,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+195,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+196,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+197,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+198,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+199,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+200,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+201,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+202,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia
+203,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia
+204,Male,43,Engineer,6.9,6,47,7,Normal Weight,117/76,69,6800,None
+205,Male,43,Engineer,7.6,8,75,4,Overweight,122/80,68,6800,None
+206,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+207,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+208,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+209,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+210,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+211,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+212,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+213,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+214,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+215,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+216,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+217,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+218,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+219,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Sleep Apnea
+220,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Sleep Apnea
+221,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+222,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+223,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+224,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+225,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+226,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+227,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+228,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+229,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+230,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+231,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+232,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+233,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+234,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+235,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+236,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+237,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+238,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+239,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+240,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+241,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+242,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+243,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+244,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+245,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+246,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+247,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+248,Male,44,Engineer,6.8,7,45,7,Overweight,130/85,78,5000,Insomnia
+249,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,None
+250,Male,44,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,None
+251,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia
+252,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia
+253,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+254,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+255,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+256,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+257,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+258,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+259,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+260,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+261,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+262,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None
+263,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None
+264,Female,45,Manager,6.9,7,55,5,Overweight,125/82,75,5500,None
+265,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia
+266,Female,48,Nurse,5.9,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+267,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia
+268,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,None
+269,Female,49,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+270,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+271,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+272,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+273,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+274,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+275,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+276,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+277,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea
+278,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea
+279,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Insomnia
+280,Female,50,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+281,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,None
+282,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+283,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+284,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+285,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+286,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+287,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+288,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+289,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+290,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+291,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+292,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+293,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+294,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+295,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+296,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+297,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+298,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+299,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+300,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+301,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+302,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+303,Female,51,Nurse,7.1,7,55,6,Normal Weight,125/82,72,6000,None
+304,Female,51,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+305,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+306,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+307,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia
+308,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia
+309,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+310,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+311,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+312,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+313,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+314,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+315,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+316,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,Insomnia
+317,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+318,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+319,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+320,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+321,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+322,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+323,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+324,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+325,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+326,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+327,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+328,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+329,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+330,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+331,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+332,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+333,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+334,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+335,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+336,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+337,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+338,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+339,Female,54,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+340,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea
+341,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea
+342,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None
+343,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None
+344,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None
+345,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+346,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+347,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+348,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+349,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+350,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+351,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+352,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+353,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+354,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+355,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+356,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+357,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+358,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+359,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,None
+360,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None
+361,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+362,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+363,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+364,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+365,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+366,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+367,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+368,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+369,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+370,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+371,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+372,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+373,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+374,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea</script>
+<script>
+(() => {
+"use strict";
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const C = {
+  moon: css("--moon"), moon2: css("--moon-2"), moon3: css("--moon-3"), rule: css("--rule"),
+  insomnia: css("--insomnia"), apnea: css("--apnea"), doc: css("--doc"), eng: css("--eng"),
+};
+const DIS_COLOR = { "None": C.moon3, "Insomnia": C.insomnia, "Sleep Apnea": C.apnea };
+const DIS_ORDER = { "Sleep Apnea": 0, "Insomnia": 1, "None": 2 };
+
+// ---------- data ----------
+const raw = d3.csvParse(document.getElementById("csv").textContent.trim());
+const people = raw.map((r) => {
+  const [sys, dia] = r["Blood Pressure"].split("/").map(Number);
+  const bmi = r["BMI Category"] === "Normal Weight" ? "Normal" : r["BMI Category"];
+  return {
+    id: +r["Person ID"], gender: r.Gender, age: +r.Age, occ: r.Occupation,
+    dur: +r["Sleep Duration"], qual: +r["Quality of Sleep"], act: +r["Physical Activity Level"],
+    stress: +r["Stress Level"], bmi, bp: r["Blood Pressure"], sys, dia, hr: +r["Heart Rate"],
+    steps: +r["Daily Steps"], dis: r["Sleep Disorder"],
+    key: [r.Gender, r.Age, r.Occupation, r["Sleep Duration"], r["Quality of Sleep"], r["Physical Activity Level"], r["Stress Level"], r["BMI Category"], r["Blood Pressure"], r["Heart Rate"], r["Daily Steps"], r["Sleep Disorder"]].join("|"),
+  };
+});
+const profiles = new Map();
+people.forEach((p) => {
+  if (!profiles.has(p.key)) profiles.set(p.key, { ...p, count: 0, members: [] });
+  const pr = profiles.get(p.key);
+  p.copy = pr.count; pr.count++; pr.members.push(p);
+});
+const uniq = [...profiles.values()];
+const MAIN_OCC = ["Nurse", "Doctor", "Engineer", "Lawyer", "Teacher", "Accountant", "Salesperson"];
+const occGroup = (p) => (MAIN_OCC.includes(p.occ) ? p.occ : "Other");
+const corr = (xs, ys) => d3.sum(xs, (x, i) => (x - d3.mean(xs)) * (ys[i] - d3.mean(ys))) /
+  Math.sqrt(d3.sum(xs, (x) => (x - d3.mean(xs)) ** 2) * d3.sum(ys, (y) => (y - d3.mean(ys)) ** 2));
+const ols = (rows, fx, fy) => {
+  const mx = d3.mean(rows, fx), my = d3.mean(rows, fy);
+  const b = d3.sum(rows, (r) => (fx(r) - mx) * (fy(r) - my)) / d3.sum(rows, (r) => (fx(r) - mx) ** 2);
+  return { b, a: my - b * mx, r: corr(rows.map(fx), rows.map(fy)) };
+};
+const pct = (n, d) => `${Math.round((100 * n) / d)}%`;
+
+// deterministic randomness so the sky is the same for every viewer
+let seed = 7;
+const rand = () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+people.forEach((p) => { p.sx = rand(); p.sy = rand(); });
+
+// ---------- chart scaffold ----------
+const box = document.getElementById("chart-box");
+const svg = d3.select("#chart");
+const gOver = svg.append("g").attr("class", "overlay-under");
+const gDots = svg.append("g").attr("class", "dots");
+const gAnn = svg.append("g").attr("class", "overlay");
+const tip = document.getElementById("tip");
+let W = 600, H = 500, current = "sky", delaunay = null, pos = [];
+
+const dots = gDots.selectAll("circle").data(people).join("circle")
+  .attr("class", "star").attr("r", 2).attr("fill", C.moon).attr("cx", (d) => d.sx * W).attr("cy", (d) => d.sy * H);
+
+const phyllo = (i, s) => { const a = i * 2.399963, rr = s * 0.62 * Math.sqrt(i + 0.5); return [rr * Math.cos(a), rr * Math.sin(a)]; };
+
+// Lay out groups as phyllotaxis clusters at centers; returns positions and dot radius.
+function clusters(groupOf, centerOf, maxR, sortFn) {
+  const groups = d3.group(people, groupOf);
+  const maxN = d3.max(groups.values(), (g) => g.length);
+  const s = maxR / (0.62 * Math.sqrt(maxN));
+  const out = new Map();
+  for (const [k, g] of groups) {
+    const [cx, cy] = centerOf(k, g);
+    const arr = sortFn ? [...g].sort(sortFn) : g;
+    arr.forEach((p, i) => { const [dx, dy] = phyllo(i, s); out.set(p, [cx + dx, cy + dy]); });
+  }
+  return { out, r: Math.max(1.1, Math.min(4, s * 0.42)) };
+}
+const byDis = (a, b) => DIS_ORDER[a.dis] - DIS_ORDER[b.dis] || a.age - b.age;
+
+function margins() { return W < 520 ? { t: 18, r: 12, b: 40, l: 36 } : { t: 24, r: 24, b: 46, l: 48 }; }
+
+function axes(x, y, xLabel, yLabel, xTicks) {
+  const m = margins();
+  const gx = gOver.append("g").attr("class", "axis").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickValues(xTicks).tickSize(4).tickSizeOuter(0));
+  gx.select(".domain").remove();
+  const gy = gOver.append("g").attr("class", "axis").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).tickValues([4, 5, 6, 7, 8, 9]).tickSize(0).tickPadding(8));
+  gy.select(".domain").remove();
+  gOver.append("g").attr("class", "grid").selectAll("line").data([4, 5, 6, 7, 8, 9]).join("line")
+    .attr("x1", m.l).attr("x2", W - m.r).attr("y1", y).attr("y2", y);
+  gOver.append("line").attr("x1", m.l).attr("x2", W - m.r).attr("y1", H - m.b).attr("y2", H - m.b).attr("stroke", C.rule);
+  gOver.append("text").attr("class", "axis-label").attr("x", W - m.r).attr("y", H - 6).attr("text-anchor", "end").text(xLabel);
+  gOver.append("text").attr("class", "axis-label").attr("x", m.l - (W < 520 ? 30 : 40)).attr("y", m.t - 8).text(yLabel);
+}
+
+function label(g, x, y, lines, anchor = "middle") {
+  const t = g.append("text").attr("x", x).attr("y", y).attr("text-anchor", anchor);
+  lines.forEach(([txt, cls], i) => t.append("tspan").attr("x", x).attr("dy", i ? "1.35em" : 0).attr("class", `${cls} halo`).text(txt));
+  return t;
+}
+
+// ---------- states ----------
+const STATES = {
+  sky: {
+    title: "Every person in the dataset", note: "Size: hours of sleep · brightness: sleep quality",
+    layout() {
+      const pad = 10;
+      return people.map((p) => ({
+        x: pad + p.sx * (W - 2 * pad), y: pad + p.sy * (H - 2 * pad),
+        r: 0.8 + (p.dur - 5.8) * 1.15, fill: C.moon, o: 0.18 + ((p.qual - 4) / 5) * 0.82,
+      }));
+    },
+  },
+  stress: {
+    title: "Sleep quality by stress level", note: "Each dot is one row · line: average quality per stress level",
+    layout() {
+      const m = margins();
+      const x = d3.scaleLinear([2.5, 8.5], [m.l, W - m.r]), y = d3.scaleLinear([3.5, 9.5], [H - m.b, m.t]);
+      const cell = Math.min((W - m.l - m.r) / 6, (H - m.t - m.b) / 6);
+      const { out, r } = clusters((p) => `${p.stress}|${p.qual}`, (k) => { const [s, q] = k.split("|").map(Number); return [x(s), y(q)]; }, cell * 0.44, (a, b) => a.dur - b.dur);
+      this.draw = () => {
+        axes(x, y, "Stress level →", "Sleep quality", [3, 4, 5, 6, 7, 8]);
+        const means = d3.rollups(people, (v) => d3.mean(v, (p) => p.qual), (p) => p.stress).sort((a, b) => a[0] - b[0]);
+        gAnn.append("path").attr("d", d3.line((d) => x(d[0]), (d) => y(d[1]))(means)).attr("fill", "none").attr("stroke", C.moon).attr("stroke-width", 2).attr("stroke-linecap", "round");
+        gAnn.selectAll(".mean").data(means).join("circle").attr("cx", (d) => x(d[0])).attr("cy", (d) => y(d[1])).attr("r", 4.5).attr("fill", C.moon).attr("stroke", css("--night")).attr("stroke-width", 2);
+        const rr = corr(people.map((p) => p.stress), people.map((p) => p.qual));
+        label(gAnn, W - m.r, m.t + 4, [[`r = ${rr.toFixed(2).replace("-", "−")}`, "ann-big"], ["more stress, worse sleep", "ann-sub"]], "end");
+      };
+      return people.map((p) => { const [px, py] = out.get(p); return { x: px, y: py, r, fill: C.moon, o: 0.85 }; });
+    },
+  },
+  exercise: {
+    title: "Sleep quality by daily activity", note: "Activity: minutes of physical activity per day · line: least-squares fit",
+    layout() { return activityLayout.call(this, false); },
+  },
+  simpson: {
+    title: "Same data, split by occupation", note: "Lines: least-squares fit within each group",
+    layout() { return activityLayout.call(this, true); },
+  },
+  jobs: {
+    title: "Sleep disorders by occupation", note: "One dot per row · 'Other' = software engineers, scientists, sales reps, manager",
+    layout() {
+      const order = [...MAIN_OCC, "Other"];
+      const cols = W > H * 1.15 ? 4 : 2, rows = Math.ceil(order.length / cols);
+      const m = { t: 8, b: 8 };
+      const cw = W / cols, ch = (H - m.t - m.b) / rows;
+      const R = Math.min(cw * 0.36, ch * 0.3);
+      const center = (k) => { const i = order.indexOf(k); return [cw * (i % cols) + cw / 2, m.t + ch * Math.floor(i / cols) + ch * 0.44]; };
+      const { out, r } = clusters(occGroup, center, R, byDis);
+      this.draw = () => {
+        for (const k of order) {
+          const g = people.filter((p) => occGroup(p) === k);
+          const counts = d3.rollup(g, (v) => v.length, (p) => p.dis);
+          const [top] = [...counts].sort((a, b) => b[1] - a[1]);
+          const [cx, cy] = center(k);
+          const n = g.length, rad = 0.62 * (R / (0.62 * Math.sqrt(73))) * Math.sqrt(n);
+          const desc = top[0] === "None" ? `${pct(top[1], n)} no disorder` : `${pct(top[1], n)} ${top[0].toLowerCase()}`;
+          const plural = { Other: "Other jobs", Salesperson: "Salespeople" }[k] ?? `${k}s`;
+          label(gAnn, cx, cy + rad + 16, [[`${plural} · ${n}`, "grp-name"], [desc, "grp-stat"]]);
+        }
+      };
+      return people.map((p) => { const [px, py] = out.get(p); return { x: px, y: py, r, fill: DIS_COLOR[p.dis], o: 0.95 }; });
+    },
+  },
+  bmi: {
+    title: "Sleep disorders by BMI category", note: "'Normal Weight' merged into 'Normal'",
+    layout() {
+      const order = ["Normal", "Overweight", "Obese"];
+      const horiz = W > H * 0.9;
+      const center = (k) => { const i = order.indexOf(k); return horiz ? [W * (i + 0.5) / 3, H * 0.42] : [W / 2, H * (i + 0.5) / 3 - 12]; };
+      const R = horiz ? Math.min(W / 3 * 0.42, H * 0.36) : Math.min(W * 0.4, H / 3 * 0.32);
+      const { out, r } = clusters((p) => p.bmi, center, R, byDis);
+      this.draw = () => {
+        for (const k of order) {
+          const g = people.filter((p) => p.bmi === k), n = g.length;
+          const some = g.filter((p) => p.dis !== "None").length;
+          const [cx, cy] = center(k);
+          const rad = R * Math.sqrt(n / 216);
+          label(gAnn, cx, cy + rad + 18, [[`${k} · ${n}`, "grp-name"], [`${pct(some, n)} have a disorder`, "grp-stat"]]);
+        }
+      };
+      return people.map((p) => { const [px, py] = out.get(p); return { x: px, y: py, r, fill: DIS_COLOR[p.dis], o: 0.95 }; });
+    },
+  },
+  clean: {
+    title: "Women aged 50+, nurses vs everyone else", note: "Faded: the 278 rows outside this comparison",
+    layout() {
+      const grp = (p) => (p.gender === "Female" && p.age >= 50 ? (p.occ === "Nurse" ? "nurse" : "other") : "rest");
+      const horiz = W > H * 0.9;
+      const centers = horiz
+        ? { nurse: [W * 0.27, H * 0.4], other: [W * 0.62, H * 0.4], rest: [W * 0.9, H * 0.4] }
+        : { nurse: [W * 0.3, H * 0.3], other: [W * 0.72, H * 0.3], rest: [W * 0.5, H * 0.78] };
+      const R = horiz ? Math.min(W * 0.17, H * 0.3) : Math.min(W * 0.2, H * 0.17);
+      const s = R / (0.62 * Math.sqrt(56));
+      const out = new Map();
+      for (const k of ["nurse", "other", "rest"]) {
+        const g = people.filter((p) => grp(p) === k).sort(byDis);
+        const ss = k === "rest" ? s * 0.42 : s;
+        g.forEach((p, i) => { const [dx, dy] = phyllo(i, ss); out.set(p, [centers[k][0] + dx, centers[k][1] + dy]); });
+      }
+      const r = Math.max(1.2, Math.min(4.2, s * 0.42));
+      this.draw = () => {
+        const stat = (k) => { const g = people.filter((p) => grp(p) === k); return [g.length, g.filter((p) => p.dis === "Sleep Apnea").length]; };
+        const [nn, na] = stat("nurse"), [on, oa] = stat("other");
+        const off = (n) => R * Math.sqrt(n / 56) + 20;
+        label(gAnn, centers.nurse[0], centers.nurse[1] + off(nn), [[`Nurses · ${nn}`, "grp-name"], [`${pct(na, nn)} sleep apnea`, "grp-stat"]]);
+        label(gAnn, centers.other[0], centers.other[1] + off(on), [[`Other jobs · ${on}`, "grp-name"], [`${pct(oa, on)} sleep apnea`, "grp-stat"]]);
+        label(gAnn, centers.rest[0], centers.rest[1] + R * 0.42 * Math.sqrt(278 / 56) + 20, [["Everyone else", "grp-stat"]]);
+      };
+      return people.map((p) => {
+        const [px, py] = out.get(p), g = grp(p);
+        return { x: px, y: py, r: g === "rest" ? r * 0.5 : r, fill: DIS_COLOR[p.dis], o: g === "rest" ? 0.22 : 0.95 };
+      });
+    },
+  },
+  clones: {
+    title: "Identical rows grouped together", note: "Each cluster is one unique profile · bright dot: first appearance · faded: exact copies",
+    layout() {
+      const sorted = [...uniq].sort((a, b) => b.count - a.count || a.age - b.age);
+      const n = sorted.length, top = W < 520 ? 34 : 40;
+      const cols = Math.max(6, Math.round(Math.sqrt((n * W) / (H - top)))), rows = Math.ceil(n / cols);
+      const cell = Math.min(W / cols, (H - top) / rows);
+      const ox = (W - cell * cols) / 2;
+      const idx = new Map(sorted.map((pr, i) => [pr.key, i]));
+      const s = (cell * 0.44) / (0.62 * Math.sqrt(13));
+      const center = (key) => { const i = idx.get(key); return [ox + cell * (i % cols) + cell / 2, top + cell * Math.floor(i / cols) + cell / 2]; };
+      this.draw = () => {
+        const big = sorted[0], [cx, cy] = center(big.key);
+        gAnn.append("circle").attr("cx", cx).attr("cy", cy).attr("r", cell * 0.5).attr("fill", "none").attr("stroke", C.moon2).attr("stroke-width", 1);
+        label(gAnn, cx - cell * 0.5, top - (W < 520 ? 14 : 16), [[`${big.count} identical rows · ${big.age}-year-old ${big.occ.toLowerCase()}`, "ann-sub"]], "start");
+      };
+      return people.map((p) => {
+        const [cx, cy] = center(p.key), [dx, dy] = phyllo(p.copy, s);
+        return { x: cx + dx, y: cy + dy, r: Math.max(1.1, Math.min(3, s * 0.42)), fill: C.moon, o: p.copy === 0 ? 1 : 0.32 };
+      });
+    },
+  },
+  end: {
+    title: "Every person in the dataset", note: "Color: sleep disorder · size: hours of sleep · brightness: sleep quality",
+    layout() {
+      const pad = 10;
+      return people.map((p) => ({
+        x: pad + p.sx * (W - 2 * pad), y: pad + p.sy * (H - 2 * pad),
+        r: 0.8 + (p.dur - 5.8) * 1.15, fill: p.dis === "None" ? C.moon : DIS_COLOR[p.dis], o: 0.3 + ((p.qual - 4) / 5) * 0.7,
+      }));
+    },
+  },
+};
+
+function activityLayout(split) {
+  const m = margins();
+  const x = d3.scaleLinear([25, 95], [m.l, W - m.r]), y = d3.scaleLinear([3.5, 9.5], [H - m.b, m.t]);
+  const cellH = (H - m.t - m.b) / 6;
+  const { out, r } = clusters((p) => `${p.act}|${p.qual}`, (k) => { const [a, q] = k.split("|").map(Number); return [x(a), y(q)]; }, Math.min(cellH * 0.42, (W - m.l - m.r) / 26), (a, b) => a.occ.localeCompare(b.occ));
+  const fit = (rows) => ols(rows, (p) => p.act, (p) => p.qual);
+  const line = (f, rows, color, w) => {
+    const [x0, x1] = d3.extent(rows, (p) => p.act);
+    gAnn.append("line").attr("x1", x(x0)).attr("x2", x(x1)).attr("y1", y(f.a + f.b * x0)).attr("y2", y(f.a + f.b * x1))
+      .attr("stroke", color).attr("stroke-width", w).attr("stroke-linecap", "round");
+    return [x(x1), y(f.a + f.b * x1)];
+  };
+  this.draw = () => {
+    axes(x, y, "Activity, minutes/day →", "Sleep quality", [30, 45, 60, 75, 90]);
+    const all = fit(people);
+    if (!split) {
+      line(all, people, C.moon, 2);
+      label(gAnn, W - m.r, m.t + 4, [[`r = +${all.r.toFixed(2)}`, "ann-big"], ["nearly flat", "ann-sub"]], "end");
+    } else {
+      line(all, people, C.moon3, 1.5);
+      const docs = people.filter((p) => p.occ === "Doctor"), engs = people.filter((p) => p.occ === "Engineer");
+      const fd = fit(docs), fe = fit(engs);
+      line(fd, docs, C.doc, 2.5); line(fe, engs, C.eng, 2.5);
+      // label each fit at the middle of the activity range: engineers above their line, doctors below theirs
+      const xm = 52;
+      label(gAnn, x(xm), y(fe.a + fe.b * xm) - 12, [[`Engineers r = ${fe.r.toFixed(2).replace("-", "−")}`, "ann"]], "middle");
+      label(gAnn, x(xm), y(fd.a + fd.b * xm) + 24, [[`Doctors r = +${fd.r.toFixed(2)}`, "ann"]], "middle");
+    }
+  };
+  return people.map((p) => {
+    const [px, py] = out.get(p);
+    if (!split) return { x: px, y: py, r, fill: C.moon, o: 0.8 };
+    const c = p.occ === "Doctor" ? C.doc : p.occ === "Engineer" ? C.eng : C.moon3;
+    return { x: px, y: py, r, fill: c, o: p.occ === "Doctor" || p.occ === "Engineer" ? 1 : 0.28 };
+  });
+}
+
+function apply(name, animate) {
+  const st = STATES[name];
+  current = name;
+  st.draw = null;
+  pos = st.layout();
+  gOver.selectAll("*").remove();
+  gAnn.selectAll("*").remove();
+  if (st.draw) st.draw();
+  document.getElementById("chart-title").textContent = st.title;
+  document.getElementById("chart-note").textContent = st.note;
+  svg.classed("twinkle", (name === "sky" || name === "end") && !reduceMotion);
+  const dur = animate && !reduceMotion ? 1100 : 0;
+  const t = dots.interrupt().transition().duration(dur).ease(d3.easeCubicInOut).delay((d, i) => (dur ? (i % 40) * 6 : 0));
+  t.attr("cx", (d, i) => pos[i].x).attr("cy", (d, i) => pos[i].y).attr("r", (d, i) => pos[i].r)
+    .attr("fill", (d, i) => pos[i].fill).attr("opacity", (d, i) => pos[i].o);
+  for (const g of [gOver, gAnn]) {
+    g.interrupt().attr("opacity", dur ? 0 : 1);
+    if (dur) g.transition().delay(dur * 0.7).duration(400).attr("opacity", 1);
+  }
+  delaunay = d3.Delaunay.from(pos, (d) => d.x, (d) => d.y);
+  document.querySelectorAll("#nav button").forEach((b) => b.setAttribute("aria-current", b.dataset.step === name ? "step" : "false"));
+  document.querySelectorAll(".step").forEach((s) => s.classList.toggle("is-active", s.dataset.step === name));
+}
+
+function resize() {
+  const r = box.getBoundingClientRect();
+  if (r.width < 10 || r.height < 10) return;
+  W = r.width; H = r.height;
+  svg.attr("viewBox", `0 0 ${W} ${H}`);
+  apply(current, false);
+}
+new ResizeObserver(resize).observe(box);
+resize();
+
+// ---------- tooltip ----------
+const fmtDis = (d) => (d === "None" ? "None" : d);
+box.addEventListener("pointermove", (e) => {
+  if (!delaunay) return;
+  const r = box.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+  const i = delaunay.find(mx, my), p = pos[i];
+  if (!p || Math.hypot(p.x - mx, p.y - my) > 16 || p.o < 0.25) { tip.hidden = true; return; }
+  const d = people[i], pr = profiles.get(d.key);
+  tip.innerHTML = `<b>${d.gender === "Female" ? "Woman" : "Man"}, ${d.age} · ${d.occ}</b>
+    <div class="row"><span>Sleep</span><span>${d.dur} h · ${d.qual}/10</span></div>
+    <div class="row"><span>Stress</span><span>${d.stress}/10</span></div>
+    <div class="row"><span>Activity</span><span>${d.act} min · ${d.steps.toLocaleString()} steps</span></div>
+    <div class="row"><span>BMI · BP</span><span>${d.bmi} · ${d.bp}</span></div>
+    <div class="row"><span>Disorder</span><span>${fmtDis(d.dis)}</span></div>
+    ${pr.count > 1 ? `<div class="row"><span>Identical rows</span><span>${pr.count}</span></div>` : ""}`;
+  tip.hidden = false;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  let tx = p.x + 14, ty = p.y + 14;
+  if (tx + tw > W) tx = p.x - tw - 14;
+  if (ty + th > H) ty = p.y - th - 14;
+  tip.style.left = `${Math.max(0, tx)}px`; tip.style.top = `${Math.max(0, ty)}px`;
+});
+box.addEventListener("pointerleave", () => { tip.hidden = true; });
+
+// ---------- scroll driving ----------
+const stepEls = [...document.querySelectorAll(".step")];
+const nav = document.getElementById("nav");
+stepEls.forEach((el, i) => {
+  const b = document.createElement("button");
+  b.type = "button"; b.dataset.step = el.dataset.step; b.id = `nav-${el.dataset.step}`;
+  b.setAttribute("aria-label", `Chapter ${i + 1}: ${el.querySelector("h3").textContent}`);
+  b.addEventListener("click", () => el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" }));
+  nav.appendChild(b);
+});
+const io = new IntersectionObserver((entries) => {
+  for (const en of entries) if (en.isIntersecting && en.target.dataset.step !== current) apply(en.target.dataset.step, true);
+}, { rootMargin: window.matchMedia("(max-width: 860px)").matches ? "-72% 0px -24% 0px" : "-45% 0px -45% 0px" });
+stepEls.forEach((el) => io.observe(el));
+apply("sky", false);
+document.addEventListener("keydown", (e) => {
+  if (e.target.closest("input, button, select, textarea")) return;
+  const k = e.key.toLowerCase();
+  if (k !== "j" && k !== "k") return;
+  const i = stepEls.findIndex((s) => s.dataset.step === current);
+  const next = stepEls[Math.max(0, Math.min(stepEls.length - 1, i + (k === "j" ? 1 : -1)))];
+  next.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+});
+
+// ---------- sleep twin finder ----------
+const inputs = { stress: "in-stress", act: "in-act", steps: "in-steps", age: "in-age" };
+const outFmt = { stress: (v) => `${v} / 10`, act: (v) => `${v} min/day`, steps: (v) => Number(v).toLocaleString(), age: (v) => `${v}` };
+const BMI_N = { Normal: 0, Overweight: 1, Obese: 2 };
+let bmiSel = "Normal";
+document.querySelectorAll("#in-bmi button").forEach((b) => b.addEventListener("click", () => {
+  bmiSel = b.dataset.v;
+  document.querySelectorAll("#in-bmi button").forEach((x) => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  updateTwins();
+}));
+const ranges = { stress: 5, act: 60, steps: 7000, age: 32 };
+function nearest(q, k = 6) {
+  return uniq.map((u) => ({ u, d: Math.hypot(
+    (u.stress - q.stress) / ranges.stress, (u.act - q.act) / ranges.act, (u.steps - q.steps) / ranges.steps,
+    (u.age - q.age) / ranges.age, (BMI_N[u.bmi] - BMI_N[q.bmi]) * 0.5) })).sort((a, b) => a.d - b.d).slice(0, k).map((x) => x.u);
+}
+const meter = (q) => `<span class="meter" aria-hidden="true">${d3.range(1, 11).map((i) => `<i class="${i <= q ? "on" : ""}"></i>`).join("")}</span>`;
+function updateTwins() {
+  const q = { bmi: bmiSel };
+  for (const [k, id] of Object.entries(inputs)) { const v = +document.getElementById(id).value; q[k] = v; document.getElementById(`out-${k}`).textContent = outFmt[k](v); }
+  const nb = nearest(q);
+  document.getElementById("sum-q").textContent = d3.mean(nb, (u) => u.qual).toFixed(1);
+  document.getElementById("sum-h").textContent = d3.mean(nb, (u) => u.dur).toFixed(1);
+  document.getElementById("sum-d").textContent = `${nb.filter((u) => u.dis !== "None").length} of ${nb.length}`;
+  document.getElementById("nbr-body").innerHTML = nb.map((u) => `<tr>
+    <td>${u.gender === "Female" ? "Woman" : "Man"}, ${u.age} · ${u.occ}</td>
+    <td class="n">${u.stress}</td><td class="n">${u.act} min</td>
+    <td class="n">${meter(u.qual)}${u.qual}</td><td class="n">${u.dur}</td>
+    <td><span class="pill"><i style="background:${DIS_COLOR[u.dis]}"></i>${u.dis}</span></td>
+    <td class="n">×${u.count}</td></tr>`).join("");
+  // compare with the same person two stress levels lower
+  const lower = Math.max(1, q.stress - 2);
+  const el = document.getElementById("whatif");
+  if (lower === q.stress) { el.textContent = ""; return; }
+  const nb2 = nearest({ ...q, stress: lower });
+  const a = d3.mean(nb, (u) => u.qual), b = d3.mean(nb2, (u) => u.qual);
+  el.innerHTML = `Twins of the same profile at stress <strong>${lower}</strong> instead of ${q.stress} average <strong>${b.toFixed(1)}</strong> sleep quality instead of ${a.toFixed(1)}. That is an association across different people in the dataset, not a forecast of what lowering your stress would do.`;
+}
+Object.values(inputs).forEach((id) => document.getElementById(id).addEventListener("input", updateTwins));
+document.getElementById("twin-form").addEventListener("submit", (e) => e.preventDefault());
+updateTwins();
+})();
+</script>
