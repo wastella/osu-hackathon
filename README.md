@@ -16,6 +16,8 @@ Project for the OH/IO high school hackathon, Challenge #1: the Sleep, Health & L
 
 The page ends with a **sleep-twin finder** (pick a stress level, activity, steps, age and BMI to see the nearest profiles in the data) and a ledger of which claims the data supports and which it doesn't, such as "stress causes poor sleep."
 
+The page has Day and Night themes. It follows the device setting by default, and the System / Day / Night toggle in the top bar overrides it (the choice is saved in the browser).
+
 ## Layout
 
 | Path | What it is |
