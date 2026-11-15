@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="In the Sleep Health and Lifestyle dataset, sleep quality tracks stress, not exercise. Two charts, three checks, and what the data can't show.">
+<title>Sleep on It</title>
+<script>
+// Apply a saved light/dark choice before first paint. No saved choice means follow the device.
+(() => { try { const t = localStorage.getItem("sleep-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {} })();
+</script>
+<style>
+:root {
+  color-scheme:light;
+  --bg:#fcfcfb;
+  --ink:#0b0b0b;
+  --ink-2:#52514e;
+  --ink-3:#7c7b75;
+  --rule:#e6e5e0;
+  --stress:#2a78d6;
+  --exercise:#eb6834;
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme:dark;
+    --bg:#1a1a19;
+    --ink:#f0efec;
+    --ink-2:#c3c2b7;
+    --ink-3:#8f8e86;
+    --rule:#343431;
+    --stress:#3987e5;
+    --exercise:#d95926;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#1a1a19;
+  --ink:#f0efec;
+  --ink-2:#c3c2b7;
+  --ink-3:#8f8e86;
+  --rule:#343431;
+  --stress:#3987e5;
+  --exercise:#d95926;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:400 1.0625rem/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a { color:inherit; text-underline-offset:3px; }
+:focus-visible { outline:2px solid var(--stress); outline-offset:3px; }
+.wrap { width:min(880px,100% - 32px); margin:0 auto; padding-bottom:80px; }
+h1,h2 { font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; font-weight:600; text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2.25rem,6vw,3.5rem); line-height:1.08; letter-spacing:-.015em; max-width:16em; }
+h2 { font-size:1.6rem; line-height:1.2; margin-top:72px; }
+p,ul { max-width:41rem; margin:16px 0 0; }
+.num { font-variant-numeric:tabular-nums; }
+
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 0;
+  font-size:.875rem;
+  color:var(--ink-2);
+}
+.top b { color:var(--ink); }
+.top button {
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:5px 10px;
+  cursor:pointer;
+}
+.top button:hover { color:var(--ink); border-color:var(--ink-3); }
+header { padding:48px 0 8px; }
+.lede { font-size:1.25rem; line-height:1.5; margin-top:24px; }
+.lede + p { color:var(--ink-2); }
+
+figure { margin:32px 0 0; }
+figcaption { font-size:.875rem; line-height:1.5; color:var(--ink-2); max-width:41rem; margin-top:12px; }
+.swatch { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; }
+.swatch.stress,.dot.stress { background:var(--stress); }
+.swatch.exercise,.dot.exercise { background:var(--exercise); }
+
+/* Figure 1: two scatter panels on a shared y scale */
+.panels { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+.panel-head { display:flex; align-items:baseline; gap:12px; font-size:.9375rem; }
+.panel-head b { font-weight:600; }
+.panel-head .r { margin-left:auto; font-weight:600; }
+.plot { position:relative; margin-top:8px; }
+.plot svg { display:block; width:100%; overflow:visible; }
+.plot text { fill:var(--ink-2); font-size:12px; }
+.plot .grid { stroke:var(--rule); }
+.plot .fit { stroke:var(--ink); stroke-width:2; stroke-linecap:round; }
+.plot circle { stroke:var(--bg); stroke-width:1.5; }
+.plot circle.stress { fill:var(--stress); }
+.plot circle.exercise { fill:var(--exercise); }
+.tip {
+  position:fixed;
+  z-index:5;
+  pointer-events:none;
+  background:var(--ink);
+  color:var(--bg);
+  font-size:.8125rem;
+  line-height:1.4;
+  padding:6px 10px;
+  border-radius:6px;
+  white-space:nowrap;
+}
+
+/* Figure 2: one row per occupation, both correlations on a -1 to +1 track */
+.rows { display:grid; grid-template-columns:max-content minmax(0,1fr) max-content max-content; column-gap:16px; align-items:center; font-size:.9375rem; }
+.rows .name { padding:8px 0; }
+.rows .name small { color:var(--ink-3); font-size:.8125rem; margin-left:4px; }
+.rows .val { text-align:right; }
+.rows .col { font-size:.8125rem; color:var(--ink-2); text-align:right; white-space:nowrap; padding-bottom:4px; }
+.rows .col .swatch { margin-right:5px; }
+.rows .name.pooled { font-weight:600; }
+.rows .name.pooled small { font-weight:400; }
+.rows .sep { grid-column:1 / -1; height:1px; background:var(--rule); }
+.track { position:relative; height:36px; align-self:stretch; }
+.track i { position:absolute; left:calc(7px + (100% - 14px) * var(--p)); }
+.track .g { top:0; bottom:0; width:1px; background:var(--rule); }
+.track .g.zero { background:var(--ink-3); }
+.track .dot { top:50%; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; border:2px solid var(--bg); }
+.track.axis { height:22px; }
+.track.axis span { position:absolute; top:4px; left:calc(7px + (100% - 14px) * var(--p)); transform:translateX(-50%); font-size:.75rem; color:var(--ink-2); }
+
+table { border-collapse:collapse; margin-top:24px; font-size:.9375rem; width:100%; max-width:41rem; }
+th,td { text-align:right; padding:10px 0 10px 16px; border-bottom:1px solid var(--rule); }
+th { font-weight:400; font-size:.8125rem; color:var(--ink-2); vertical-align:bottom; }
+th:first-child,td:first-child { text-align:left; padding-left:0; }
+
+.limits { list-style:none; padding:0; }
+.limits li { padding:16px 0; border-top:1px solid var(--rule); }
+.limits li:last-child { border-bottom:1px solid var(--rule); }
+.limits b { font-weight:600; }
+footer { margin-top:56px; font-size:.875rem; color:var(--ink-2); }
+footer p { margin-top:8px; }
+
+@media (max-width:640px) {
+  body { font-size:1rem; }
+  header { padding-top:24px; }
+  .lede { font-size:1.125rem; }
+  h2 { margin-top:56px; font-size:1.4rem; }
+  .panels { grid-template-columns:1fr; gap:36px; }
+  .rows { column-gap:10px; font-size:.875rem; }
+  .rows .name small { display:block; margin-left:0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span><b>Sleep on It</b> · OH/IO hackathon, Challenge #1</span>
+    <button type="button" id="theme"></button>
+  </div>
+
+  <header>
+    <h1>Sleep quality tracks stress, not exercise.</h1>
+    <p class="lede">In the Sleep Health and Lifestyle dataset, stress level accounts for 81% of the variation in how people rate their sleep. Daily exercise accounts for 4%.</p>
+    <p>The gap holds inside every occupation and after duplicate rows are removed. It is a pattern in one dataset, and it does not show that stress causes bad sleep.</p>
+  </header>
+
+  <main>
+    <h2>1. The gap</h2>
+    <p>Each of the 374 rows is one person. They rate their stress and their sleep quality from 1 to 10 and report how many minutes they are physically active each day. Plot sleep quality against stress and the points fall along a line. Plot it against exercise and they don't.</p>
+    <figure>
+      <div class="panels">
+        <div>
+          <div class="panel-head"><b>Stress level</b><span class="r num" id="r-stress"></span></div>
+          <div class="plot" id="plot-stress"></div>
+        </div>
+        <div>
+          <div class="panel-head"><b>Daily exercise</b><span class="r num" id="r-exercise"></span></div>
+          <div class="plot" id="plot-exercise"></div>
+        </div>
+      </div>
+      <figcaption>Sleep quality (vertical, 1 to 10) against stress level and against minutes of physical activity per day. Circle area is the number of people with that combination; the largest is <span id="max-n"></span>. Lines are least-squares fits.</figcaption>
+    </figure>
+    <p>People at stress level 3 rate their sleep 9.0 out of 10 on average and sleep 8.2 hours. At level 8 it is 5.9 out of 10 and about 6 hours. Exercise shows no such step. People who are active 90 minutes a day rate their sleep 7.1, slightly below the 7.4 of people active for 30. Daily step count tells you even less (r = +0.02).</p>
+
+    <h2>2. It holds inside every occupation</h2>
+    <p>A pattern across everyone can come from mixing different groups together, so we recomputed both correlations inside each occupation. Stress points the same way in all six, between −0.75 and −0.98. Exercise points both ways: strongly positive for accountants and doctors, negative for engineers and nurses.</p>
+    <figure>
+      <div class="rows" id="rows"></div>
+      <figcaption>Correlation with sleep quality inside each occupation that has at least 30 people. Salespeople are left out because all 32 report the same stress, exercise and sleep quality, so there is nothing to correlate.</figcaption>
+    </figure>
+    <p>This is why the claim is about stress and not against exercise. Exercise goes with much better sleep in some of these groups. It just isn't a signal that holds from one group to the next, and stress is.</p>
+
+    <h2>3. It survives removing duplicates</h2>
+    <p>Only 132 of the 374 rows are distinct. The other 242 are exact copies of another row, and one profile, a 37-year-old accountant, appears 13 times. Copies can inflate a correlation, so we reran the numbers on the 132 distinct rows.</p>
+    <table>
+      <thead><tr><th>Correlation with sleep quality</th><th>All 374 rows</th><th>132 distinct rows</th></tr></thead>
+      <tbody id="dedup"></tbody>
+    </table>
+    <p>Stress barely moves. Exercise rises a little and stays weak.</p>
+
+    <h2>What this does not show</h2>
+    <ul class="limits">
+      <li><b>That stress causes bad sleep.</b> Everyone was measured once, so we can't see which came first. Bad sleep could raise stress, or something else, such as workload, could drive both.</li>
+      <li><b>That stress and sleep quality are separate measurements.</b> Both are self-ratings on the same 1 to 10 scale. Someone having a bad month may mark both down, and that alone would produce this correlation.</li>
+      <li><b>That exercise doesn't help sleep.</b> The data says exercise is not a consistent signal across groups. It says nothing about what happens when one person starts exercising.</li>
+      <li><b>The same thing about hours of sleep.</b> Across everyone, hours follow stress too (r = −0.81). Inside occupations it is mixed, from −0.99 for nurses to −0.06 for teachers. The claim is about how people rate their sleep.</li>
+      <li><b>Anything about real workers.</b> Two thirds of the rows are copies, the person IDs are sorted exactly by age, and some groups split more cleanly than real health data does: among women aged 50 and over, 50 of the 56 nurses have sleep apnea and none of the 40 other women do. The data looks generated, so read the result as a description of this dataset.</li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>Data: <a href="https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset">Sleep Health and Lifestyle Dataset</a> (Kaggle), 374 rows.</p>
+    <p>Correlations are Pearson r. "Accounts for" is r² from a straight-line fit. Distinct rows match on every column except Person ID. The charts and the table are computed in the page from the embedded CSV, and <code>analysis/check.py</code> prints every number quoted in the text.</p>
+  </footer>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script id="csv" type="text/plain">Person ID,Gender,Age,Occupation,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Blood Pressure,Heart Rate,Daily Steps,Sleep Disorder
+1,Male,27,Software Engineer,6.1,6,42,6,Overweight,126/83,77,4200,None
+2,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None
+3,Male,28,Doctor,6.2,6,60,8,Normal,125/80,75,10000,None
+4,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea
+5,Male,28,Sales Representative,5.9,4,30,8,Obese,140/90,85,3000,Sleep Apnea
+6,Male,28,Software Engineer,5.9,4,30,8,Obese,140/90,85,3000,Insomnia
+7,Male,29,Teacher,6.3,6,40,7,Obese,140/90,82,3500,Insomnia
+8,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+9,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+10,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+11,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None
+12,Male,29,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+13,Male,29,Doctor,6.1,6,30,8,Normal,120/80,70,8000,None
+14,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+15,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+16,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,None
+17,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Sleep Apnea
+18,Male,29,Doctor,6,6,30,8,Normal,120/80,70,8000,Sleep Apnea
+19,Female,29,Nurse,6.5,5,40,7,Normal Weight,132/87,80,4000,Insomnia
+20,Male,30,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+21,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+22,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+23,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+24,Male,30,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+25,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+26,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+27,Male,30,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+28,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+29,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+30,Male,30,Doctor,7.9,7,75,6,Normal,120/80,70,8000,None
+31,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Sleep Apnea
+32,Female,30,Nurse,6.4,5,35,7,Normal Weight,130/86,78,4100,Insomnia
+33,Female,31,Nurse,7.9,8,75,4,Normal Weight,117/76,69,6800,None
+34,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+35,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+36,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+37,Male,31,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+38,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+39,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+40,Male,31,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+41,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+42,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+43,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+44,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+45,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+46,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+47,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+48,Male,31,Doctor,7.8,7,75,6,Normal,120/80,70,8000,None
+49,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+50,Male,31,Doctor,7.7,7,75,6,Normal,120/80,70,8000,Sleep Apnea
+51,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None
+52,Male,32,Engineer,7.5,8,45,3,Normal,120/80,70,8000,None
+53,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+54,Male,32,Doctor,7.6,7,75,6,Normal,120/80,70,8000,None
+55,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+56,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+57,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+58,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+59,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+60,Male,32,Doctor,7.7,7,75,6,Normal,120/80,70,8000,None
+61,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+62,Male,32,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+63,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+64,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+65,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+66,Male,32,Doctor,6.2,6,30,8,Normal,125/80,72,5000,None
+67,Male,32,Accountant,7.2,8,50,6,Normal Weight,118/76,68,7000,None
+68,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,Insomnia
+69,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None
+70,Female,33,Scientist,6.2,6,50,6,Overweight,128/85,76,5500,None
+71,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+72,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+73,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+74,Male,33,Doctor,6.1,6,30,8,Normal,125/80,72,5000,None
+75,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+76,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+77,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+78,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+79,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+80,Male,33,Doctor,6,6,30,8,Normal,125/80,72,5000,None
+81,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea
+82,Female,34,Scientist,5.8,4,32,8,Overweight,131/86,81,5200,Sleep Apnea
+83,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None
+84,Male,35,Teacher,6.7,7,40,5,Overweight,128/84,70,5600,None
+85,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None
+86,Female,35,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+87,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None
+88,Male,35,Engineer,7.2,8,60,4,Normal,125/80,65,5000,None
+89,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+90,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+91,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+92,Male,35,Engineer,7.3,8,60,4,Normal,125/80,65,5000,None
+93,Male,35,Software Engineer,7.5,8,60,5,Normal Weight,120/80,70,8000,None
+94,Male,35,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea
+95,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,Insomnia
+96,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+97,Female,36,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+98,Female,36,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+99,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None
+100,Female,36,Teacher,7.1,8,60,4,Normal,115/75,68,7000,None
+101,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+102,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+103,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,None
+104,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Sleep Apnea
+105,Female,36,Teacher,7.2,8,60,4,Normal,115/75,68,7000,Sleep Apnea
+106,Male,36,Teacher,6.6,5,35,7,Overweight,129/84,74,4800,Insomnia
+107,Female,37,Nurse,6.1,6,42,6,Overweight,126/83,77,4200,None
+108,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None
+109,Male,37,Engineer,7.8,8,70,4,Normal Weight,120/80,68,7000,None
+110,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+111,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+112,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+113,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+114,Male,37,Lawyer,7.4,8,60,5,Normal,130/85,68,8000,None
+115,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+116,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+117,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+118,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+119,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+120,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+121,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+122,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+123,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+124,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+125,Female,37,Accountant,7.2,8,60,4,Normal,115/75,68,7000,None
+126,Female,37,Nurse,7.5,8,60,4,Normal Weight,120/80,70,8000,None
+127,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+128,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+129,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+130,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+131,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+132,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+133,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+134,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+135,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+136,Male,38,Lawyer,7.3,8,60,5,Normal,130/85,68,8000,None
+137,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+138,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+139,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+140,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+141,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+142,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,None
+143,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+144,Female,38,Accountant,7.1,8,60,4,Normal,115/75,68,7000,None
+145,Male,38,Lawyer,7.1,8,60,5,Normal,130/85,68,8000,Sleep Apnea
+146,Female,38,Lawyer,7.4,7,60,5,Obese,135/88,84,3300,Sleep Apnea
+147,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,Insomnia
+148,Male,39,Engineer,6.5,5,40,7,Overweight,132/87,80,4000,Insomnia
+149,Female,39,Lawyer,6.9,7,50,6,Normal Weight,128/85,75,5500,None
+150,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None
+151,Female,39,Accountant,8,9,80,3,Normal Weight,115/78,67,7500,None
+152,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+153,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+154,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+155,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+156,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+157,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+158,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+159,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+160,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+161,Male,39,Lawyer,7.2,8,60,5,Normal,130/85,68,8000,None
+162,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None
+163,Female,40,Accountant,7.2,8,55,6,Normal Weight,119/77,73,7300,None
+164,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None
+165,Male,40,Lawyer,7.9,8,90,5,Normal,130/85,68,8000,None
+166,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,Insomnia
+167,Male,41,Engineer,7.3,8,70,6,Normal Weight,121/79,72,6200,None
+168,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None
+169,Male,41,Lawyer,7.1,7,55,6,Overweight,125/82,72,6000,None
+170,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+171,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+172,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+173,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+174,Male,41,Lawyer,7.7,8,90,5,Normal,130/85,70,8000,None
+175,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+176,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+177,Male,41,Lawyer,7.6,8,90,5,Normal,130/85,70,8000,None
+178,Male,42,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+179,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+180,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+181,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+182,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+183,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+184,Male,42,Lawyer,7.8,8,90,5,Normal,130/85,70,8000,None
+185,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea
+186,Female,42,Teacher,6.8,6,45,7,Overweight,130/85,78,5000,Sleep Apnea
+187,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+188,Male,43,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+189,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+190,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+191,Female,43,Teacher,6.7,7,45,4,Overweight,135/90,65,6000,Insomnia
+192,Male,43,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+193,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+194,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+195,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+196,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+197,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+198,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+199,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+200,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+201,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Insomnia
+202,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia
+203,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Insomnia
+204,Male,43,Engineer,6.9,6,47,7,Normal Weight,117/76,69,6800,None
+205,Male,43,Engineer,7.6,8,75,4,Overweight,122/80,68,6800,None
+206,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+207,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+208,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+209,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+210,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+211,Male,43,Engineer,7.7,8,90,5,Normal,130/85,70,8000,None
+212,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+213,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+214,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+215,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+216,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+217,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+218,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,None
+219,Male,43,Engineer,7.8,8,90,5,Normal,130/85,70,8000,Sleep Apnea
+220,Male,43,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,Sleep Apnea
+221,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+222,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+223,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+224,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+225,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+226,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+227,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+228,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+229,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+230,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+231,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+232,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+233,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+234,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+235,Female,44,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+236,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+237,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+238,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+239,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+240,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+241,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+242,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+243,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,Insomnia
+244,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+245,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+246,Female,44,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+247,Male,44,Salesperson,6.3,6,45,7,Overweight,130/85,72,6000,Insomnia
+248,Male,44,Engineer,6.8,7,45,7,Overweight,130/85,78,5000,Insomnia
+249,Male,44,Salesperson,6.4,6,45,7,Overweight,130/85,72,6000,None
+250,Male,44,Salesperson,6.5,6,45,7,Overweight,130/85,72,6000,None
+251,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia
+252,Female,45,Teacher,6.8,7,30,6,Overweight,135/90,65,6000,Insomnia
+253,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+254,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+255,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+256,Female,45,Teacher,6.5,7,45,4,Overweight,135/90,65,6000,Insomnia
+257,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+258,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+259,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+260,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+261,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,Insomnia
+262,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None
+263,Female,45,Teacher,6.6,7,45,4,Overweight,135/90,65,6000,None
+264,Female,45,Manager,6.9,7,55,5,Overweight,125/82,75,5500,None
+265,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia
+266,Female,48,Nurse,5.9,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+267,Male,48,Doctor,7.3,7,65,5,Obese,142/92,83,3500,Insomnia
+268,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,None
+269,Female,49,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+270,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+271,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+272,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+273,Female,49,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+274,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+275,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+276,Female,49,Nurse,6.2,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+277,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea
+278,Male,49,Doctor,8.1,9,85,3,Obese,139/91,86,3700,Sleep Apnea
+279,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Insomnia
+280,Female,50,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+281,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,None
+282,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+283,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+284,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+285,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+286,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+287,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+288,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+289,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+290,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+291,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+292,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+293,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+294,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+295,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+296,Female,50,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+297,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+298,Female,50,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+299,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+300,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+301,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+302,Female,51,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+303,Female,51,Nurse,7.1,7,55,6,Normal Weight,125/82,72,6000,None
+304,Female,51,Nurse,6,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+305,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+306,Female,51,Nurse,6.1,6,90,8,Overweight,140/95,75,10000,Sleep Apnea
+307,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia
+308,Female,52,Accountant,6.5,7,45,7,Overweight,130/85,72,6000,Insomnia
+309,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+310,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+311,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+312,Female,52,Accountant,6.6,7,45,7,Overweight,130/85,72,6000,Insomnia
+313,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+314,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+315,Female,52,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+316,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,Insomnia
+317,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+318,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+319,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+320,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+321,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+322,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+323,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+324,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+325,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+326,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+327,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+328,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+329,Female,53,Engineer,8.3,9,30,3,Normal,125/80,65,5000,None
+330,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+331,Female,53,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+332,Female,53,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+333,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+334,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+335,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+336,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+337,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+338,Female,54,Engineer,8.4,9,30,3,Normal,125/80,65,5000,None
+339,Female,54,Engineer,8.5,9,30,3,Normal,125/80,65,5000,None
+340,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea
+341,Female,55,Nurse,8.1,9,75,4,Overweight,140/95,72,5000,Sleep Apnea
+342,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None
+343,Female,56,Doctor,8.2,9,90,3,Normal Weight,118/75,65,10000,None
+344,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None
+345,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+346,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+347,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+348,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+349,Female,57,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+350,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+351,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+352,Female,57,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+353,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+354,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+355,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+356,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+357,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+358,Female,58,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+359,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,None
+360,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,None
+361,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+362,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+363,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+364,Female,59,Nurse,8.2,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+365,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+366,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+367,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+368,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+369,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+370,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+371,Female,59,Nurse,8,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+372,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+373,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea
+374,Female,59,Nurse,8.1,9,75,3,Overweight,140/95,68,7000,Sleep Apnea</script>
+<script>
+(() => {
+"use strict";
+// ---------- data ----------
+const [head, ...lines] = document.getElementById("csv").textContent.trim().split(/\r?\n/);
+const cols = head.split(",");
+const people = lines.map((line) => {
+  const r = Object.fromEntries(line.split(",").map((v, i) => [cols[i], v]));
+  return {
+    occ: r.Occupation, quality: +r["Quality of Sleep"], stress: +r["Stress Level"],
+    exercise: +r["Physical Activity Level"], steps: +r["Daily Steps"],
+    key: cols.filter((c) => c !== "Person ID").map((c) => r[c]).join("|"),
+  };
+});
+const distinct = [...new Map(people.map((p) => [p.key, p])).values()];
+
+const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+// Least-squares fit of sleep quality on `key`. r is NaN when either side has no variation.
+function fit(rows, key) {
+  const xs = rows.map((p) => p[key]), ys = rows.map((p) => p.quality);
+  const mx = mean(xs), my = mean(ys);
+  let sxy = 0, sxx = 0, syy = 0;
+  xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; syy += (ys[i] - my) ** 2; });
+  const slope = sxy / sxx;
+  return { slope, intercept: my - slope * mx, r: sxy / Math.sqrt(sxx * syy) };
+}
+const signed = (r) => (r < 0 ? "−" : "+") + Math.abs(r).toFixed(2);
+
+// ---------- figure 1 ----------
+const PANELS = [
+  { key: "stress", domain: [2.5, 8.5], ticks: [3, 4, 5, 6, 7, 8], axis: "Stress level (1 to 10)", unit: (v) => `Stress ${v}` },
+  { key: "exercise", domain: [25, 95], ticks: [30, 45, 60, 75, 90], axis: "Physical activity (minutes per day)", unit: (v) => `${v} min/day` },
+];
+for (const p of PANELS) {
+  p.el = document.getElementById(`plot-${p.key}`);
+  p.fit = fit(people, p.key);
+  p.cells = new Map();
+  for (const d of people) { const k = `${d[p.key]}|${d.quality}`; p.cells.set(k, (p.cells.get(k) || 0) + 1); }
+  // biggest first, so small circles stay on top
+  p.cells = [...p.cells].map(([k, n]) => ({ x: +k.split("|")[0], q: +k.split("|")[1], n })).sort((a, b) => b.n - a.n);
+  document.getElementById(`r-${p.key}`).textContent = `r = ${signed(p.fit.r)}`;
+}
+const maxN = Math.max(...PANELS.map((p) => p.cells[0].n));
+document.getElementById("max-n").textContent = maxN;
+
+function drawPanel(p) {
+  const W = p.el.clientWidth;
+  if (!W) return;
+  const H = Math.round(Math.min(340, Math.max(250, W * 0.78)));
+  const m = { t: 10, r: 8, b: 44, l: 26 };
+  const x = (v) => m.l + ((v - p.domain[0]) / (p.domain[1] - p.domain[0])) * (W - m.l - m.r);
+  const y = (q) => H - m.b - ((q - 3.5) / 6) * (H - m.t - m.b);
+  const maxR = Math.min(16, ((H - m.t - m.b) / 6) * 0.44);
+  const xs = people.map((d) => d[p.key]), x0 = Math.min(...xs), x1 = Math.max(...xs);
+  const at = (v) => y(p.fit.intercept + p.fit.slope * v);
+  p.el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Sleep quality against ${p.axis.toLowerCase()}, r = ${signed(p.fit.r)}">
+    ${[4, 5, 6, 7, 8, 9].map((q) => `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${y(q)}" y2="${y(q)}"/><text x="${m.l - 10}" y="${y(q) + 4}" text-anchor="end">${q}</text>`).join("")}
+    ${p.ticks.map((t) => `<text x="${x(t)}" y="${H - m.b + 18}" text-anchor="middle">${t}</text>`).join("")}
+    <text x="${W - m.r}" y="${H - 6}" text-anchor="end">${p.axis}</text>
+    ${p.cells.map((c) => `<circle class="${p.key}" cx="${x(c.x)}" cy="${y(c.q)}" r="${Math.max(2.5, maxR * Math.sqrt(c.n / maxN))}" data-tip="${p.unit(c.x)}, sleep quality ${c.q}: ${c.n} ${c.n === 1 ? "person" : "people"}"/>`).join("")}
+    <line class="fit" x1="${x(x0)}" x2="${x(x1)}" y1="${at(x0)}" y2="${at(x1)}"/>
+  </svg>`;
+}
+const drawAll = () => PANELS.forEach(drawPanel);
+new ResizeObserver(drawAll).observe(PANELS[0].el);
+drawAll();
+
+const tip = document.getElementById("tip");
+document.addEventListener("pointermove", (e) => {
+  const text = e.target.dataset && e.target.dataset.tip;
+  if (!text) { tip.hidden = true; return; }
+  tip.textContent = text;
+  tip.hidden = false;
+  const w = tip.offsetWidth;
+  tip.style.left = `${Math.max(8, Math.min(innerWidth - w - 8, e.clientX - w / 2))}px`;
+  tip.style.top = `${e.clientY - tip.offsetHeight - 14}px`;
+});
+
+// ---------- figure 2 ----------
+const byOcc = new Map();
+for (const d of people) byOcc.set(d.occ, [...(byOcc.get(d.occ) || []), d]);
+const groups = [["Everyone", people], ...[...byOcc].filter(([, g]) => g.length >= 30).sort((a, b) => b[1].length - a[1].length)]
+  .map(([name, g]) => ({ name, n: g.length, stress: fit(g, "stress").r, exercise: fit(g, "exercise").r }))
+  .filter((g) => !Number.isNaN(g.stress) && !Number.isNaN(g.exercise));
+const pos = (r) => ((r + 1) / 2).toFixed(4);
+const gridlines = [-1, -0.5, 0, 0.5, 1].map((v) => `<i class="g${v ? "" : " zero"}" style="--p:${pos(v)}"></i>`).join("");
+const plural = (name) => (name === "Everyone" ? name : `${name}s`);
+document.getElementById("rows").innerHTML = `
+  <span></span><span></span>
+  <span class="col"><i class="swatch stress"></i>Stress</span>
+  <span class="col"><i class="swatch exercise"></i>Exercise</span>
+  ${groups.map((g, i) => { const c = i ? "" : " pooled"; return `
+  <span class="name${c}">${plural(g.name)} <small class="num">${g.n}</small></span>
+  <span class="track">${gridlines}<i class="dot stress" style="--p:${pos(g.stress)}" data-tip="${plural(g.name)}: stress r = ${signed(g.stress)}"></i><i class="dot exercise" style="--p:${pos(g.exercise)}" data-tip="${plural(g.name)}: exercise r = ${signed(g.exercise)}"></i></span>
+  <span class="val num">${signed(g.stress)}</span>
+  <span class="val num">${signed(g.exercise)}</span>${i ? "" : '<i class="sep"></i>'}`; }).join("")}
+  <span></span>
+  <span class="track axis">${[-1, -0.5, 0, 0.5, 1].map((v) => `<span style="--p:${pos(v)}">${v ? signed(v).replace(/0$/, "").replace(".0", "") : "0"}</span>`).join("")}</span>
+  <span></span><span></span>`;
+
+// ---------- duplicates table ----------
+document.getElementById("dedup").innerHTML = [["Stress level", "stress"], ["Daily exercise", "exercise"], ["Daily steps", "steps"]]
+  .map(([label, key]) => `<tr><td>${label}</td><td class="num">${signed(fit(people, key).r)}</td><td class="num">${signed(fit(distinct, key).r)}</td></tr>`).join("");
+
+// ---------- light / dark ----------
+const root = document.documentElement, themeBtn = document.getElementById("theme");
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : systemDark.matches);
+const labelTheme = () => { themeBtn.textContent = isDark() ? "Light mode" : "Dark mode"; };
+themeBtn.addEventListener("click", () => {
+  root.dataset.theme = isDark() ? "light" : "dark";
+  try { localStorage.setItem("sleep-theme", root.dataset.theme); } catch (e) {}
+  labelTheme();
+});
+systemDark.addEventListener("change", labelTheme);
+labelTheme();
+})();
+</script>
+</body>
+</html>

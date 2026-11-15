@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="In the Sleep Health and Lifestyle dataset, sleep quality tracks stress, not exercise. Two charts, three checks, and what the data can't show.">
+<title>Sleep on It</title>
+<script>
+// Apply a saved light/dark choice before first paint. No saved choice means follow the device.
+(() => { try { const t = localStorage.getItem("sleep-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {} })();
+</script>
+<style>
+:root {
+  color-scheme:light;
+  --bg:#fcfcfb;
+  --ink:#0b0b0b;
+  --ink-2:#52514e;
+  --ink-3:#7c7b75;
+  --rule:#e6e5e0;
+  --stress:#2a78d6;
+  --exercise:#eb6834;
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme:dark;
+    --bg:#1a1a19;
+    --ink:#f0efec;
+    --ink-2:#c3c2b7;
+    --ink-3:#8f8e86;
+    --rule:#343431;
+    --stress:#3987e5;
+    --exercise:#d95926;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#1a1a19;
+  --ink:#f0efec;
+  --ink-2:#c3c2b7;
+  --ink-3:#8f8e86;
+  --rule:#343431;
+  --stress:#3987e5;
+  --exercise:#d95926;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:400 1.0625rem/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a { color:inherit; text-underline-offset:3px; }
+:focus-visible { outline:2px solid var(--stress); outline-offset:3px; }
+.wrap { width:min(880px,100% - 32px); margin:0 auto; padding-bottom:80px; }
+h1,h2 { font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; font-weight:600; text-wrap:balance; margin:0; }
+h1 { font-size:clamp(2.25rem,6vw,3.5rem); line-height:1.08; letter-spacing:-.015em; max-width:16em; }
+h2 { font-size:1.6rem; line-height:1.2; margin-top:72px; }
+p,ul { max-width:41rem; margin:16px 0 0; }
+.num { font-variant-numeric:tabular-nums; }
+
+.top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:20px 0;
+  font-size:.875rem;
+  color:var(--ink-2);
+}
+.top b { color:var(--ink); }
+.top button {
+  font:inherit;
+  color:inherit;
+  background:none;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  padding:5px 10px;
+  cursor:pointer;
+}
+.top button:hover { color:var(--ink); border-color:var(--ink-3); }
+header { padding:48px 0 8px; }
+.lede { font-size:1.25rem; line-height:1.5; margin-top:24px; }
+.lede + p { color:var(--ink-2); }
+
+figure { margin:32px 0 0; }
+figcaption { font-size:.875rem; line-height:1.5; color:var(--ink-2); max-width:41rem; margin-top:12px; }
+.swatch { display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:8px; }
+.swatch.stress,.dot.stress { background:var(--stress); }
+.swatch.exercise,.dot.exercise { background:var(--exercise); }
+
+/* Figure 1: two scatter panels on a shared y scale */
+.panels { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+.panel-head { display:flex; align-items:baseline; gap:12px; font-size:.9375rem; }
+.panel-head b { font-weight:600; }
+.panel-head .r { margin-left:auto; font-weight:600; }
+.plot { position:relative; margin-top:8px; }
+.plot svg { display:block; width:100%; overflow:visible; }
+.plot text { fill:var(--ink-2); font-size:12px; }
+.plot .grid { stroke:var(--rule); }
+.plot .fit { stroke:var(--ink); stroke-width:2; stroke-linecap:round; }
+.plot circle { stroke:var(--bg); stroke-width:1.5; }
+.plot circle.stress { fill:var(--stress); }
+.plot circle.exercise { fill:var(--exercise); }
+.tip {
+  position:fixed;
+  z-index:5;
+  pointer-events:none;
+  background:var(--ink);
+  color:var(--bg);
+  font-size:.8125rem;
+  line-height:1.4;
+  padding:6px 10px;
+  border-radius:6px;
+  white-space:nowrap;
+}
+
+/* Figure 2: one row per occupation, both correlations on a -1 to +1 track */
+.rows { display:grid; grid-template-columns:max-content minmax(0,1fr) max-content max-content; column-gap:16px; align-items:center; font-size:.9375rem; }
+.rows .name { padding:8px 0; }
+.rows .name small { color:var(--ink-3); font-size:.8125rem; margin-left:4px; }
+.rows .val { text-align:right; }
+.rows .col { font-size:.8125rem; color:var(--ink-2); text-align:right; white-space:nowrap; padding-bottom:4px; }
+.rows .col .swatch { margin-right:5px; }
+.rows .name.pooled { font-weight:600; }
+.rows .name.pooled small { font-weight:400; }
+.rows .sep { grid-column:1 / -1; height:1px; background:var(--rule); }
+.track { position:relative; height:36px; align-self:stretch; }
+.track i { position:absolute; left:calc(7px + (100% - 14px) * var(--p)); }
+.track .g { top:0; bottom:0; width:1px; background:var(--rule); }
+.track .g.zero { background:var(--ink-3); }
+.track .dot { top:50%; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; border:2px solid var(--bg); }
+.track.axis { height:22px; }
+.track.axis span { position:absolute; top:4px; left:calc(7px + (100% - 14px) * var(--p)); transform:translateX(-50%); font-size:.75rem; color:var(--ink-2); }
+
+table { border-collapse:collapse; margin-top:24px; font-size:.9375rem; width:100%; max-width:41rem; }
+th,td { text-align:right; padding:10px 0 10px 16px; border-bottom:1px solid var(--rule); }
+th { font-weight:400; font-size:.8125rem; color:var(--ink-2); vertical-align:bottom; }
+th:first-child,td:first-child { text-align:left; padding-left:0; }
+
+.limits { list-style:none; padding:0; }
+.limits li { padding:16px 0; border-top:1px solid var(--rule); }
+.limits li:last-child { border-bottom:1px solid var(--rule); }
+.limits b { font-weight:600; }
+footer { margin-top:56px; font-size:.875rem; color:var(--ink-2); }
+footer p { margin-top:8px; }
+
+@media (max-width:640px) {
+  body { font-size:1rem; }
+  header { padding-top:24px; }
+  .lede { font-size:1.125rem; }
+  h2 { margin-top:56px; font-size:1.4rem; }
+  .panels { grid-template-columns:1fr; gap:36px; }
+  .rows { column-gap:10px; font-size:.875rem; }
+  .rows .name small { display:block; margin-left:0; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span><b>Sleep on It</b> · OH/IO hackathon, Challenge #1</span>
+    <button type="button" id="theme"></button>
+  </div>
+
+  <header>
+    <h1>Sleep quality tracks stress, not exercise.</h1>
+    <p class="lede">In the Sleep Health and Lifestyle dataset, stress level accounts for 81% of the variation in how people rate their sleep. Daily exercise accounts for 4%.</p>
+    <p>The gap holds inside every occupation and after duplicate rows are removed. It is a pattern in one dataset, and it does not show that stress causes bad sleep.</p>
+  </header>
+
+  <main>
+    <h2>1. The gap</h2>
+    <p>Each of the 374 rows is one person. They rate their stress and their sleep quality from 1 to 10 and report how many minutes they are physically active each day. Plot sleep quality against stress and the points fall along a line. Plot it against exercise and they don't.</p>
+    <figure>
+      <div class="panels">
+        <div>
+          <div class="panel-head"><b>Stress level</b><span class="r num" id="r-stress"></span></div>
+          <div class="plot" id="plot-stress"></div>
+        </div>
+        <div>
+          <div class="panel-head"><b>Daily exercise</b><span class="r num" id="r-exercise"></span></div>
+          <div class="plot" id="plot-exercise"></div>
+        </div>
+      </div>
+      <figcaption>Sleep quality (vertical, 1 to 10) against stress level and against minutes of physical activity per day. Circle area is the number of people with that combination; the largest is <span id="max-n"></span>. Lines are least-squares fits.</figcaption>
+    </figure>
+    <p>People at stress level 3 rate their sleep 9.0 out of 10 on average and sleep 8.2 hours. At level 8 it is 5.9 out of 10 and about 6 hours. Exercise shows no such step. People who are active 90 minutes a day rate their sleep 7.1, slightly below the 7.4 of people active for 30. Daily step count tells you even less (r = +0.02).</p>
+
+    <h2>2. It holds inside every occupation</h2>
+    <p>A pattern across everyone can come from mixing different groups together, so we recomputed both correlations inside each occupation. Stress points the same way in all six, between −0.75 and −0.98. Exercise points both ways: strongly positive for accountants and doctors, negative for engineers and nurses.</p>
+    <figure>
+      <div class="rows" id="rows"></div>
+      <figcaption>Correlation with sleep quality inside each occupation that has at least 30 people. Salespeople are left out because all 32 report the same stress, exercise and sleep quality, so there is nothing to correlate.</figcaption>
+    </figure>
+    <p>This is why the claim is about stress and not against exercise. Exercise goes with much better sleep in some of these groups. It just isn't a signal that holds from one group to the next, and stress is.</p>
+
+    <h2>3. It survives removing duplicates</h2>
+    <p>Only 132 of the 374 rows are distinct. The other 242 are exact copies of another row, and one profile, a 37-year-old accountant, appears 13 times. Copies can inflate a correlation, so we reran the numbers on the 132 distinct rows.</p>
+    <table>
+      <thead><tr><th>Correlation with sleep quality</th><th>All 374 rows</th><th>132 distinct rows</th></tr></thead>
+      <tbody id="dedup"></tbody>
+    </table>
+    <p>Stress barely moves. Exercise rises a little and stays weak.</p>
+
+    <h2>What this does not show</h2>
+    <ul class="limits">
+      <li><b>That stress causes bad sleep.</b> Everyone was measured once, so we can't see which came first. Bad sleep could raise stress, or something else, such as workload, could drive both.</li>
+      <li><b>That stress and sleep quality are separate measurements.</b> Both are self-ratings on the same 1 to 10 scale. Someone having a bad month may mark both down, and that alone would produce this correlation.</li>
+      <li><b>That exercise doesn't help sleep.</b> The data says exercise is not a consistent signal across groups. It says nothing about what happens when one person starts exercising.</li>
+      <li><b>The same thing about hours of sleep.</b> Across everyone, hours follow stress too (r = −0.81). Inside occupations it is mixed, from −0.99 for nurses to −0.06 for teachers. The claim is about how people rate their sleep.</li>
+      <li><b>Anything about real workers.</b> Two thirds of the rows are copies, the person IDs are sorted exactly by age, and some groups split more cleanly than real health data does: among women aged 50 and over, 50 of the 56 nurses have sleep apnea and none of the 40 other women do. The data looks generated, so read the result as a description of this dataset.</li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>Data: <a href="https://www.kaggle.com/datasets/uom190346a/sleep-health-and-lifestyle-dataset">Sleep Health and Lifestyle Dataset</a> (Kaggle), 374 rows.</p>
+    <p>Correlations are Pearson r. "Accounts for" is r² from a straight-line fit. Distinct rows match on every column except Person ID. The charts and the table are computed in the page from the embedded CSV, and <code>analysis/check.py</code> prints every number quoted in the text.</p>
+  </footer>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script id="csv" type="text/plain">__CSV__</script>
+<script>
+(() => {
+"use strict";
+// ---------- data ----------
+const [head, ...lines] = document.getElementById("csv").textContent.trim().split(/\r?\n/);
+const cols = head.split(",");
+const people = lines.map((line) => {
+  const r = Object.fromEntries(line.split(",").map((v, i) => [cols[i], v]));
+  return {
+    occ: r.Occupation, quality: +r["Quality of Sleep"], stress: +r["Stress Level"],
+    exercise: +r["Physical Activity Level"], steps: +r["Daily Steps"],
+    key: cols.filter((c) => c !== "Person ID").map((c) => r[c]).join("|"),
+  };
+});
+const distinct = [...new Map(people.map((p) => [p.key, p])).values()];
+
+const mean = (xs) => xs.reduce((a, b) => a + b, 0) / xs.length;
+// Least-squares fit of sleep quality on `key`. r is NaN when either side has no variation.
+function fit(rows, key) {
+  const xs = rows.map((p) => p[key]), ys = rows.map((p) => p.quality);
+  const mx = mean(xs), my = mean(ys);
+  let sxy = 0, sxx = 0, syy = 0;
+  xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; syy += (ys[i] - my) ** 2; });
+  const slope = sxy / sxx;
+  return { slope, intercept: my - slope * mx, r: sxy / Math.sqrt(sxx * syy) };
+}
+const signed = (r) => (r < 0 ? "−" : "+") + Math.abs(r).toFixed(2);
+
+// ---------- figure 1 ----------
+const PANELS = [
+  { key: "stress", domain: [2.5, 8.5], ticks: [3, 4, 5, 6, 7, 8], axis: "Stress level (1 to 10)", unit: (v) => `Stress ${v}` },
+  { key: "exercise", domain: [25, 95], ticks: [30, 45, 60, 75, 90], axis: "Physical activity (minutes per day)", unit: (v) => `${v} min/day` },
+];
+for (const p of PANELS) {
+  p.el = document.getElementById(`plot-${p.key}`);
+  p.fit = fit(people, p.key);
+  p.cells = new Map();
+  for (const d of people) { const k = `${d[p.key]}|${d.quality}`; p.cells.set(k, (p.cells.get(k) || 0) + 1); }
+  // biggest first, so small circles stay on top
+  p.cells = [...p.cells].map(([k, n]) => ({ x: +k.split("|")[0], q: +k.split("|")[1], n })).sort((a, b) => b.n - a.n);
+  document.getElementById(`r-${p.key}`).textContent = `r = ${signed(p.fit.r)}`;
+}
+const maxN = Math.max(...PANELS.map((p) => p.cells[0].n));
+document.getElementById("max-n").textContent = maxN;
+
+function drawPanel(p) {
+  const W = p.el.clientWidth;
+  if (!W) return;
+  const H = Math.round(Math.min(340, Math.max(250, W * 0.78)));
+  const m = { t: 10, r: 8, b: 44, l: 26 };
+  const x = (v) => m.l + ((v - p.domain[0]) / (p.domain[1] - p.domain[0])) * (W - m.l - m.r);
+  const y = (q) => H - m.b - ((q - 3.5) / 6) * (H - m.t - m.b);
+  const maxR = Math.min(16, ((H - m.t - m.b) / 6) * 0.44);
+  const xs = people.map((d) => d[p.key]), x0 = Math.min(...xs), x1 = Math.max(...xs);
+  const at = (v) => y(p.fit.intercept + p.fit.slope * v);
+  p.el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="Sleep quality against ${p.axis.toLowerCase()}, r = ${signed(p.fit.r)}">
+    ${[4, 5, 6, 7, 8, 9].map((q) => `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${y(q)}" y2="${y(q)}"/><text x="${m.l - 10}" y="${y(q) + 4}" text-anchor="end">${q}</text>`).join("")}
+    ${p.ticks.map((t) => `<text x="${x(t)}" y="${H - m.b + 18}" text-anchor="middle">${t}</text>`).join("")}
+    <text x="${W - m.r}" y="${H - 6}" text-anchor="end">${p.axis}</text>
+    ${p.cells.map((c) => `<circle class="${p.key}" cx="${x(c.x)}" cy="${y(c.q)}" r="${Math.max(2.5, maxR * Math.sqrt(c.n / maxN))}" data-tip="${p.unit(c.x)}, sleep quality ${c.q}: ${c.n} ${c.n === 1 ? "person" : "people"}"/>`).join("")}
+    <line class="fit" x1="${x(x0)}" x2="${x(x1)}" y1="${at(x0)}" y2="${at(x1)}"/>
+  </svg>`;
+}
+const drawAll = () => PANELS.forEach(drawPanel);
+new ResizeObserver(drawAll).observe(PANELS[0].el);
+drawAll();
+
+const tip = document.getElementById("tip");
+document.addEventListener("pointermove", (e) => {
+  const text = e.target.dataset && e.target.dataset.tip;
+  if (!text) { tip.hidden = true; return; }
+  tip.textContent = text;
+  tip.hidden = false;
+  const w = tip.offsetWidth;
+  tip.style.left = `${Math.max(8, Math.min(innerWidth - w - 8, e.clientX - w / 2))}px`;
+  tip.style.top = `${e.clientY - tip.offsetHeight - 14}px`;
+});
+
+// ---------- figure 2 ----------
+const byOcc = new Map();
+for (const d of people) byOcc.set(d.occ, [...(byOcc.get(d.occ) || []), d]);
+const groups = [["Everyone", people], ...[...byOcc].filter(([, g]) => g.length >= 30).sort((a, b) => b[1].length - a[1].length)]
+  .map(([name, g]) => ({ name, n: g.length, stress: fit(g, "stress").r, exercise: fit(g, "exercise").r }))
+  .filter((g) => !Number.isNaN(g.stress) && !Number.isNaN(g.exercise));
+const pos = (r) => ((r + 1) / 2).toFixed(4);
+const gridlines = [-1, -0.5, 0, 0.5, 1].map((v) => `<i class="g${v ? "" : " zero"}" style="--p:${pos(v)}"></i>`).join("");
+const plural = (name) => (name === "Everyone" ? name : `${name}s`);
+document.getElementById("rows").innerHTML = `
+  <span></span><span></span>
+  <span class="col"><i class="swatch stress"></i>Stress</span>
+  <span class="col"><i class="swatch exercise"></i>Exercise</span>
+  ${groups.map((g, i) => { const c = i ? "" : " pooled"; return `
+  <span class="name${c}">${plural(g.name)} <small class="num">${g.n}</small></span>
+  <span class="track">${gridlines}<i class="dot stress" style="--p:${pos(g.stress)}" data-tip="${plural(g.name)}: stress r = ${signed(g.stress)}"></i><i class="dot exercise" style="--p:${pos(g.exercise)}" data-tip="${plural(g.name)}: exercise r = ${signed(g.exercise)}"></i></span>
+  <span class="val num">${signed(g.stress)}</span>
+  <span class="val num">${signed(g.exercise)}</span>${i ? "" : '<i class="sep"></i>'}`; }).join("")}
+  <span></span>
+  <span class="track axis">${[-1, -0.5, 0, 0.5, 1].map((v) => `<span style="--p:${pos(v)}">${v ? signed(v).replace(/0$/, "").replace(".0", "") : "0"}</span>`).join("")}</span>
+  <span></span><span></span>`;
+
+// ---------- duplicates table ----------
+document.getElementById("dedup").innerHTML = [["Stress level", "stress"], ["Daily exercise", "exercise"], ["Daily steps", "steps"]]
+  .map(([label, key]) => `<tr><td>${label}</td><td class="num">${signed(fit(people, key).r)}</td><td class="num">${signed(fit(distinct, key).r)}</td></tr>`).join("");
+
+// ---------- light / dark ----------
+const root = document.documentElement, themeBtn = document.getElementById("theme");
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
+const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : systemDark.matches);
+const labelTheme = () => { themeBtn.textContent = isDark() ? "Light mode" : "Dark mode"; };
+themeBtn.addEventListener("click", () => {
+  root.dataset.theme = isDark() ? "light" : "dark";
+  try { localStorage.setItem("sleep-theme", root.dataset.theme); } catch (e) {}
+  labelTheme();
+});
+systemDark.addEventListener("change", labelTheme);
+labelTheme();
+})();
+</script>
+</body>
+</html>
